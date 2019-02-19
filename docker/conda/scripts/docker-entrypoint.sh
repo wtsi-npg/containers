@@ -17,10 +17,10 @@ export MAIL=/var/spool/mail/$USER
 export PATH="$CONDA_INSTALL_DIR/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 if [ ! -e "$HOME/.condarc" ]; then
-    cp /root/.condarc "$HOME/.condarc"
+    cp "$CONDA_INSTALL_DIR/etc/condarc" "$HOME/.condarc"
 fi
 
-chown $USER:$USER "$HOME/.condarc"
-chown $USER:$USER "$CONDA_INSTALL_DIR/conda-bld/linux-64/"
+chown -R $USER:$USER /home/$USER
+chmod g+w "$CONDA_INSTALL_DIR"
 
 exec gosu $USER "$@"

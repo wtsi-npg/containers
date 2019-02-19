@@ -41,18 +41,7 @@ conda config --set auto_update_conda False
 conda config --set ssl_verify True
 conda config --set show_channel_urls True
 
-conda install -y python jinja2 setuptools 
+conda install -y python jinja2 networkx packaging setuptools 
 conda install -y "conda-build=$CONDA_BUILD_VERSION" conda-verify
 
-# Create a temp environment and pre-download commonly used packages
-conda create -y -n temp --download-only \
-     autoconf \
-     automake \
-     gcc_linux-64 \
-     gfortran_linux-64 \
-     gxx_linux-64 \
-     libtool \
-     make \
-     pkg-config
-conda remove -y -n temp --all
 conda clean -y -st
