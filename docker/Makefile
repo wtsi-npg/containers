@@ -42,4 +42,4 @@ ub-12.04-conda-irods-4.2.$(TAG): conda/ubuntu/12.04/Dockerfile.irods-4.2.5 ub-12
 	touch $@
 
 clean:
-	rm $(images)
+	rm -f $(images)
