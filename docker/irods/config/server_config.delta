@@ -1,0 +1,1 @@
+.catalog_provider_hosts=["localhost"] | .default_resource_name="testResc" | . + {default_hash_scheme: "MD5"}
