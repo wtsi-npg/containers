@@ -1,4 +1,3 @@
-#    FROM ubuntu:16.04
 FROM wsinpg/ub-16.04-base:latest
 
 ARG IRODS_VERSION=4.2.5
