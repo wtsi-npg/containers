@@ -29,6 +29,10 @@ echo $(jq -f /opt/docker/irods/config/irods_environment.delta \
 # container being captured in the IES database.
 sudo su irods -c "iadmin rmresc demoResc"
 
+# Also remove mentions of demoResc from the iRODS rules
+cp /etc/irods/core.re /etc/irods/core.re.orig
+grep -v demoResc /etc/irods/core.re.orig > /etc/irods/core.re
+
 mkdir -p /var/lib/irods/iRODS/Vault2
 chown irods:irods /var/lib/irods/iRODS/Vault2
 
