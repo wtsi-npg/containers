@@ -2,6 +2,8 @@ TAG=$(shell git describe)
 LABEL_NAMESPACE=uk.ac.sanger
 TAG_NAMESPACE=wsinpg
 
+DOCKER_ARGS ?= --pull --no-cache # IMPORTANT to get security updates
+
 .PHONY: clean
 
 image_names := ub-12.04-base ub-16.04-base
@@ -13,7 +15,7 @@ images := $(addsuffix .$(TAG), $(image_names))
 all: $(images)
 
 ub-12.04-base.$(TAG): base/ubuntu/12.04/Dockerfile
-	docker build \
+	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
 	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
 	--tag $(TAG_NAMESPACE)/ub-12.04-base:latest \
@@ -21,7 +23,7 @@ ub-12.04-base.$(TAG): base/ubuntu/12.04/Dockerfile
 	touch $@
 
 ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
-	docker build --pull \
+	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
 	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
 	--tag $(TAG_NAMESPACE)/ub-16.04-base:latest \
@@ -29,7 +31,7 @@ ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	touch $@
 
 ub-12.04-conda.$(TAG): conda/ubuntu/12.04/Dockerfile ub-12.04-base.$(TAG)
-	docker build \
+	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
 	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
 	--tag $(TAG_NAMESPACE)/ub-12.04-conda:latest \
@@ -37,7 +39,7 @@ ub-12.04-conda.$(TAG): conda/ubuntu/12.04/Dockerfile ub-12.04-base.$(TAG)
 	touch $@
 
 ub-12.04-conda-irods-4.1.$(TAG): conda/ubuntu/12.04/Dockerfile.irods-4.1.2 ub-12.04-conda.$(TAG)
-	docker build \
+	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
 	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
 	--tag $(TAG_NAMESPACE)/ub-12.04-conda-irods-4.1:latest \
@@ -45,7 +47,7 @@ ub-12.04-conda-irods-4.1.$(TAG): conda/ubuntu/12.04/Dockerfile.irods-4.1.2 ub-12
 	touch $@
 
 ub-12.04-conda-irods-4.2.$(TAG): conda/ubuntu/12.04/Dockerfile.irods-4.2.5 ub-12.04-conda.$(TAG)
-	docker build \
+	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
 	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
 	--tag $(TAG_NAMESPACE)/ub-12.04-conda-irods-4.2:latest \
@@ -53,7 +55,7 @@ ub-12.04-conda-irods-4.2.$(TAG): conda/ubuntu/12.04/Dockerfile.irods-4.2.5 ub-12
 	touch $@
 
 ub-16.04-irods-4.2.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
-	docker build \
+	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
 	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
 	--tag $(TAG_NAMESPACE)/ub-16.04-irods-4.2:latest \
