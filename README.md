@@ -18,6 +18,11 @@ A Conda package-building image with Conda, conda-build and
 conda-verify installed. Additional Dockerfiles exist for this image to
 allow variant to be made that support building iRODS 4.1 and iRODS 4.2.
 
+### irods/ubuntu/12.04 ###
+
+This is a Docker image of a vanilla iRODS 4.1.12 server that works out
+of the box. To be used for running tests only.
+
 ### irods/ubuntu/16.04 ###
 
 This is a Docker image of a vanilla iRODS 4.2.5 server that works out
