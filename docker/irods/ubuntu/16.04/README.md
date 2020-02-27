@@ -1,8 +1,8 @@
-# iRODS 4.2.5 Server
+# iRODS 4.2.7 Server
 
 **Not for use in production!**
 
-This is a Docker image of a vanilla iRODS 4.2.5 server that works out
+This is a Docker image of a vanilla iRODS 4.2.7 server that works out
 of the box. To be used for running tests only.
 
 The iRODS server starts with a single user 'irods' configured.
@@ -12,7 +12,7 @@ The iRODS server starts with a single user 'irods' configured.
 
 To run the container (with iCAT port binding to the host machine):
 
-`docker run -d --name irods -p 1247:1247 wtsi-npg/ub-16.04-irods-4.2.0.4`
+`docker run -d --name irods -p 1247:1247 wtsi-npg/ub-16.04-irods-4.2:latest`
 
 ### Connecting
 The following iRODS users have been setup:
