@@ -6,10 +6,11 @@
 #
 # Add a local using the USER and UID passed in, or fallback.
 
-UID=${UID:-9001}
+UID=${UID:-1001}
 USER=${USER:-user}
 
 echo "Starting with USER: $USER, UID: $UID"
+
 useradd --shell /bin/bash --uid $UID \
         --non-unique --create-home $USER --comment ""
 

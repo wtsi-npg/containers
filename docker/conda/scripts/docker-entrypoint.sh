@@ -2,10 +2,15 @@
 
 set -ex
 
-CONDA_USER_ID=${CONDA_USER_ID:-9001}
+CONDA_USER_ID=${CONDA_USER_ID:-1001}
 CONDA_USER=${CONDA_USER:-conda}
 CONDA_GROUP_ID=${CONDA_GROUP_ID:-32001}
 CONDA_INSTALL_DIR=${CONDA_INSTALL_DIR:-/opt/conda}
+
+echo "Starting with USER: $CONDA_USER, " \
+     "UID: $CONDA_USER_ID, GID: $CONDA_GROUP_ID"
+
+groupadd --gid $CONDA_GROUP_ID --force
 
 useradd --shell /bin/bash --uid $CONDA_USER_ID --gid $CONDA_GROUP_ID \
         --non-unique --create-home $CONDA_USER --comment ""
