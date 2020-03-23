@@ -10,7 +10,7 @@ CONDA_INSTALL_DIR=${CONDA_INSTALL_DIR:-/opt/conda}
 echo "Starting with USER: $CONDA_USER, " \
      "UID: $CONDA_USER_ID, GID: $CONDA_GROUP_ID"
 
-groupadd --gid $CONDA_GROUP_ID --force
+groupmod --gid $CONDA_GROUP_ID conda
 
 useradd --shell /bin/bash --uid $CONDA_USER_ID --gid $CONDA_GROUP_ID \
         --non-unique --create-home $CONDA_USER --comment ""
@@ -26,6 +26,7 @@ if [ ! -e "$HOME/.condarc" ]; then
 fi
 
 chown -R $USER:$USER /home/$USER
+chown -R $USER:conda "$CONDA_INSTALL_DIR"
 chmod g+w "$CONDA_INSTALL_DIR"
 
 exec gosu $USER "$@"
