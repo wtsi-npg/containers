@@ -18,7 +18,7 @@ RUN apt-get update && \
     /opt/docker/conda/scripts/install_conda.sh && \
     cp /root/.condarc /opt/conda/etc/condarc && \
     chmod +x /opt/docker/conda/scripts/docker-entrypoint.sh && \
-    groupadd -g $CONDA_GROUP_ID conda && \
+    groupadd --gid $CONDA_GROUP_ID conda && \
     chgrp -R conda /opt/conda && \
     chmod -R g=u /opt/conda
 
