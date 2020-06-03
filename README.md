@@ -1,4 +1,4 @@
-# Unofficial NPG Docker images
+# NPG Docker images
 
 ## The images ##
 
