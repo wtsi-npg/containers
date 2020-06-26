@@ -61,3 +61,18 @@ sudo su irods -c "iadmin modresc unixfs2 host localhost"
 sudo su irods -c "iadmin mkresc replResc replication"
 sudo su irods -c "iadmin addchildtoresc replResc unixfs1"
 sudo su irods -c "iadmin addchildtoresc replResc unixfs2"
+
+# Put version-specific hackery here
+case "$IRODS_VERSION" in
+    4.2.7)
+        # Workaround for https://github.com/irods/irods/issues/4672 in iRODS 4.2.7
+        cd /tmp
+        for user in public rodsadmin
+        do
+            sudo su postgres -c "echo \"insert into r_user_group (group_user_id, user_id, create_ts, modify_ts) select user_id, user_id, NOW(), NOW() from R_USER_MAIN where user_name = '${user}'\" | psql -d ICAT"
+        done
+        ;;
+    *)
+        echo Unknown iRODS version "$IRODS_VERSION"
+        exit 1
+esac
