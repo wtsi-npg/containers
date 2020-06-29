@@ -7,8 +7,7 @@ DOCKER_ARGS ?= --pull --no-cache # IMPORTANT to get security updates
 .PHONY: clean
 
 image_names := ub-12.04-base ub-16.04-base
-image_names += ub-12.04-conda ub-12.04-conda-irods-4.1 ub-12.04-conda-irods-4.2
-image_names += ub-12.04-irods-4.1
+image_names += ub-12.04-conda
 image_names += ub-16.04-irods-4.2
 
 images := $(addsuffix .$(TAG), $(image_names))
@@ -39,30 +38,6 @@ ub-12.04-conda.$(TAG): conda/ubuntu/12.04/Dockerfile ub-12.04-base.$(TAG)
 	--tag $(TAG_NAMESPACE)/ub-12.04-conda:$(TAG) --file $< ./conda
 	touch $@
 
-ub-12.04-conda-irods-4.1.$(TAG): conda/ubuntu/12.04/Dockerfile.irods-4.1.2 ub-12.04-conda.$(TAG)
-	docker build $(DOCKER_ARGS) \
-	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
-	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
-	--tag $(TAG_NAMESPACE)/ub-12.04-conda-irods-4.1:latest \
-	--tag $(TAG_NAMESPACE)/ub-12.04-conda-irods-4.1:$(TAG) --file $< ./conda
-	touch $@
-
-ub-12.04-conda-irods-4.2.$(TAG): conda/ubuntu/12.04/Dockerfile.irods-4.2.5 ub-12.04-conda.$(TAG)
-	docker build $(DOCKER_ARGS) \
-	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
-	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
-	--tag $(TAG_NAMESPACE)/ub-12.04-conda-irods-4.2:latest \
-	--tag $(TAG_NAMESPACE)/ub-12.04-conda-irods-4.2:$(TAG) --file $< ./conda
-	touch $@
-
-ub-12.04-irods-4.1.$(TAG): irods/ubuntu/12.04/Dockerfile ub-12.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
-	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
-	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
-	--tag $(TAG_NAMESPACE)/ub-12.04-irods-4.1:latest \
-	--tag $(TAG_NAMESPACE)/ub-12.04-irods-4.1:$(TAG) --file $< ./irods
-	touch $@
-
 ub-16.04-irods-4.2.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
@@ -72,4 +47,4 @@ ub-16.04-irods-4.2.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	touch $@
 
 clean:
-	rm -f $(images)
+	rm -f $(foreach image_name,$(image_names), $(image_name)*)
