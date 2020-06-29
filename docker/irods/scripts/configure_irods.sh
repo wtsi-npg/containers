@@ -65,7 +65,7 @@ sudo su irods -c "iadmin addchildtoresc replResc unixfs2"
 # Put version-specific hackery here
 case "$IRODS_VERSION" in
     4.2.7)
-        # Workaround for https://github.com/irods/irods/issues/4672 in iRODS 4.2.7
+        echo Applying workaround for https://github.com/irods/irods/issues/4672 in iRODS 4.2.7
         cd /tmp
         for user in public rodsadmin
         do
@@ -73,6 +73,5 @@ case "$IRODS_VERSION" in
         done
         ;;
     *)
-        echo Unknown iRODS version "$IRODS_VERSION"
-        exit 1
+        echo No version-specific configuration for "$IRODS_VERSION"
 esac
