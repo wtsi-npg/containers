@@ -12,6 +12,11 @@ builds where curl is later dropped.
 A base image with curl and gosu installed, intended for multi-stage
 builds where curl is later dropped.
 
+### base/ubuntu/18.04 ###
+
+A base image with curl and gosu installed, intended for multi-stage
+builds where curl is later dropped.
+
 ### conda/ubuntu/12.04 ###
 
 A Conda package-building image with Conda, conda-build and
@@ -25,7 +30,12 @@ of the box. To be used for running tests only.
 
 ### irods/ubuntu/16.04 ###
 
-This is a Docker image of a vanilla iRODS 4.2.5 server that works out
+This is a Docker image of a vanilla iRODS 4.2.7 server that works out
+of the box. To be used for running tests only.
+
+### irods/ubuntu/18.04 ###
+
+This is a Docker image of a vanilla iRODS 4.2.8 server that works out
 of the box. To be used for running tests only.
 
 ## Build in instructions ##
