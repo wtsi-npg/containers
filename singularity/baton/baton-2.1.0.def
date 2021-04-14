@@ -1,0 +1,124 @@
+BootStrap: library
+From: library://godloved/secure/ubuntu-xenial
+Fingerprints: B7761495F83E6BF7686CA5F0C1A7D02200787921
+Stage: build
+
+# Copy in some helper scripts
+%files
+  ./scripts/install_apt_tools.sh /install_apt_tools.sh
+  ./scripts/install_build_tools.sh /install_build_tools.sh
+  ./scripts/add_irods_apt_repository.sh /add_irods_apt_repository.sh
+  ./baton/baton-2.1.0.env /baton-2.1.0.env
+
+%post
+  . ${SINGULARITY_ROOTFS}/baton-2.1.0.env
+
+  apt-get update
+  apt-get install -q -y ca-certificates
+  ${SINGULARITY_ROOTFS}/install_apt_tools.sh
+  ${SINGULARITY_ROOTFS}/install_build_tools.sh
+  ${SINGULARITY_ROOTFS}/add_irods_apt_repository.sh
+
+  # Install baton build dependencies
+  apt-get install -q -y --no-install-recommends \
+    irods-runtime="$IRODS_VERSION" \
+    irods-dev="$IRODS_VERSION" \
+    libjansson-dev
+  apt-get install -q -y -f
+
+  # Fetch the baton release
+  cd ${SINGULARITY_ROOTFS}
+  curl -sS -L "$BATON_URL" -O
+  tar xfz baton-${BATON_VERSION}.tar.gz
+  mv baton-${BATON_VERSION} ${SINGULARITY_ROOTFS}/baton-src
+  cd ${SINGULARITY_ROOTFS}/baton-src
+
+  # Build baton
+  ./configure --prefix ${SINGULARITY_ROOTFS}/baton-build \
+            CPPFLAGS="-I/usr/include/irods" \
+            LDFLAGS="-L/usr/lib/irods/externals" || cat config.log
+  make install
+
+Bootstrap: library
+From: ubuntu:16.04
+Stage: install
+
+%help
+  baton iRODS client 2.1.0
+
+  For details of the supported iRODS version and the information
+  necessary to reproduce this image, please see the image metadata:
+
+    singularity inspect --labels <image path>
+
+  Documentation: https://wtsi-npg.github.io/baton/
+  Source:        https://github.com/wtsi-npg/baton
+
+# Copy in some helper scripts
+%files
+  ./scripts/install_apt_tools.sh /install_apt_tools.sh
+  ./scripts/uninstall_apt_tools.sh /uninstall_apt_tools.sh
+  ./scripts/add_irods_apt_repository.sh /add_irods_apt_repository.sh
+  ./baton/baton-2.1.0.env /baton-2.1.0.env
+
+# Copy the built baton tools from the build image
+%files from build  
+  baton-build/bin /usr/local/
+  baton-build/include /usr/local/
+  baton-build/lib /usr/local/
+
+%post
+  . ${SINGULARITY_ROOTFS}/baton-2.1.0.env 
+
+  apt-get update
+  apt-get install -q -y ca-certificates
+  ${SINGULARITY_ROOTFS}/install_apt_tools.sh
+  ${SINGULARITY_ROOTFS}/add_irods_apt_repository.sh
+
+  # Install baton runtime dependencies
+  apt-get install -q -y --no-install-recommends \
+    irods-runtime="$IRODS_VERSION" libjansson4
+  apt-get install -q -y -f
+
+  # Clean up
+  ${SINGULARITY_ROOTFS}/uninstall_apt_tools.sh
+  apt-get autoremove -q -y
+  apt-get clean -q -y
+  rm -rf /var/lib/apt/lists/*
+
+  # Annotate dynamic labels on the image
+  echo "org.label-schema.name baton-${BATON_VERSION}-irods-${IRODS_VERSION}" >> "$SINGULARITY_LABELS"
+  echo "org.label-schema.vcs-url $GIT_URL" >> "$SINGULARITY_LABELS"
+  echo "org.label-schema.vcs-ref $GIT_REF" >> "$SINGULARITY_LABELS"
+
+
+# Annotate static labels on the image
+%labels
+  Author Keith James
+  org.label-schema.vendor Wellcome Sanger Institute
+  org.label-schema.url https://wtsi-npg.github.io/baton/
+
+# Add all the baton tools as apps
+%apprun baton-chmod
+  exec baton-chmod "${@}"
+
+%apprun baton-get
+  exec baton-get "${@}"
+
+%apprun baton-list
+  exec baton-list "${@}"
+
+%apprun baton-metaquery
+  exec baton-metaquery "${@}"
+
+%apprun baton-put
+  exec baton-put "${@}"
+
+%apprun baton-specificquery
+  exec baton-specificquery "${@}"
+
+%apprun baton-do
+  exec baton-do "${@}"
+
+%test
+  baton-do --version
