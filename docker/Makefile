@@ -1,6 +1,6 @@
-TAG=$(shell git describe)
+TAG=$(shell git rev-parse HEAD)
 LABEL_NAMESPACE=uk.ac.sanger
-TAG_NAMESPACE=ghcr.io/wtsi-npg
+TAG_NAMESPACE=ghcr.io/$(REPO_OWNER)
 
 DOCKER_ARGS ?= --pull --no-cache # IMPORTANT to get security updates
 
@@ -23,7 +23,6 @@ ub-12.04-base.$(TAG): base/ubuntu/12.04/Dockerfile
 	--tag $(TAG_NAMESPACE)/ub-12.04-base:$(TAG) --file $< ./base
 	touch $@
 
-
 ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
@@ -32,7 +31,6 @@ ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	--tag $(TAG_NAMESPACE)/ub-16.04-base:$(TAG) --file $< ./base
 	touch $@
 
-
 ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
@@ -40,7 +38,6 @@ ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	--tag $(TAG_NAMESPACE)/ub-18.04-base:latest \
 	--tag $(TAG_NAMESPACE)/ub-18.04-base:$(TAG) --file $< ./base
 	touch $@
-
 
 ub-12.04-conda.$(TAG): conda/ubuntu/12.04/Dockerfile ub-12.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) \
@@ -57,7 +54,6 @@ ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	--tag $(TAG_NAMESPACE)/ub-16.04-irods-4.2.7:latest \
 	--tag $(TAG_NAMESPACE)/ub-16.04-irods-4.2.7:$(TAG) --file $< ./irods
 	touch $@
-
 
 ub-18.04-irods-4.2.8.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) \
