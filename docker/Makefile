@@ -1,4 +1,4 @@
-TAG=$(shell git rev-parse HEAD)
+TAG=$(shell git describe --always)
 LABEL_NAMESPACE=uk.ac.sanger
 TAG_NAMESPACE=ghcr.io/$(REPO_OWNER)
 
