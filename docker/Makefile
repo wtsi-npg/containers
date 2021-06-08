@@ -1,6 +1,10 @@
 TAG=$(shell git describe --always)
 LABEL_NAMESPACE=uk.ac.sanger
-TAG_NAMESPACE=ghcr.io/$(REPO_OWNER)
+ifdef REPO_OWNER
+TAG_NAMESPACE?=ghcr.io/$(REPO_OWNER)
+else
+TAG_NAMESPACE?=wsinpg
+endif
 
 DOCKER_ARGS ?= --pull --no-cache # IMPORTANT to get security updates
 
