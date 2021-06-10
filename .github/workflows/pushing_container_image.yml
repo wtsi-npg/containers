@@ -41,10 +41,9 @@ jobs:
         run: |      
             docker images
             export TAG=$(git describe --always)
-            docker push ghcr.io/${{ env.REPO_OWNER }}/ub-12.04-base:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-16.04-base:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-18.04-base:$TAG
-            docker push ghcr.io/${{ env.REPO_OWNER }}/ub-12.04-conda:$TAG
+            docker push ghcr.io/${{ env.REPO_OWNER }}/ub-16.04-conda:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-16.04-irods-4.2.7:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-18.04-irods-4.2.8:$TAG
 

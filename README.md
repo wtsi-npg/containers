@@ -2,11 +2,6 @@
 
 ## The images ##
 
-### base/ubuntu/12.04 ###
-
-A base image with curl and gosu installed, intended for multi-stage
-builds where curl is later dropped.
-
 ### base/ubuntu/16.04 ###
 
 A base image with curl and gosu installed, intended for multi-stage
@@ -17,7 +12,7 @@ builds where curl is later dropped.
 A base image with curl and gosu installed, intended for multi-stage
 builds where curl is later dropped.
 
-### conda/ubuntu/12.04 ###
+### conda/ubuntu/16.04 ###
 
 A Conda package-building image with Conda, conda-build and
 conda-verify installed.
