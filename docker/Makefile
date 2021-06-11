@@ -14,6 +14,7 @@ image_names := ub-16.04-base ub-18.04-base
 image_names += ub-16.04-conda
 image_names += ub-16.04-irods-4.2.7
 image_names += ub-18.04-irods-4.2.8
+image_names += ub-18.04-irods-4.2.9
 
 images := $(addsuffix .$(TAG), $(image_names))
 
@@ -57,6 +58,14 @@ ub-18.04-irods-4.2.8.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
 	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.8:latest \
 	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.8:$(TAG) --file $< ./irods
+	touch $@
+
+ub-18.04-irods-4.2.9.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
+	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.9 \
+	--label $(LABEL_NAMESPACE).repository=$(shell git remote get-url origin) \
+	--label $(LABEL_NAMESPACE).commit=$(shell git log --pretty=format:'%H' -n 1) \
+	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.9:latest \
+	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.9:$(TAG) --file $< ./irods
 	touch $@
 
 clean:
