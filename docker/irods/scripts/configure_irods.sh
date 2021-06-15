@@ -33,6 +33,11 @@ cd /var/lib/irods/.irods/
 echo $(jq -f /opt/docker/irods/config/irods_environment.delta \
           ./irods_environment.json) > ./irods_environment.json
 
+# iRODS 4.2.9 needs to started here. It's not required for 4.2.7 and
+# 4.2.8, which appear to be started during setup. We call restart
+# because trying to start a server fails if one is already running.
+sudo service irods restart
+
 # Fix up the demoResc to use localhost, to avoid the transient
 # hostname of the build container being captured in the IES database.
 sudo su irods -c "iadmin modresc demoResc host localhost"
