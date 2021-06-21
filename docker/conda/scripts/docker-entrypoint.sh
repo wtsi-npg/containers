@@ -25,8 +25,14 @@ if [ ! -e "$HOME/.condarc" ]; then
     cp "$CONDA_INSTALL_DIR/etc/condarc" "$HOME/.condarc"
 fi
 
-chown -R $USER:$USER /home/$USER
-chown -R $USER:conda "$CONDA_INSTALL_DIR"
+find /home/$USER -not -user $USER -not -group $USER -print0 |\
+    xargs --max-procs 0 --null --no-run-if-empty \
+	  chown --no-dereference $USER:$USER
+
+find "$CONDA_INSTALL_DIR" -not -user $USER -not -group conda -print0 |\
+    xargs --max-procs 0 --null --no-run-if-empty \
+	  chown --no-dereference $USER:conda
+
 chmod g+w "$CONDA_INSTALL_DIR"
 
 exec gosu $USER "$@"
