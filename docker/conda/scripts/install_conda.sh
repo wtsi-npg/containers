@@ -42,9 +42,8 @@ conda config --set auto_update_conda False
 conda config --set ssl_verify True
 conda config --set show_channel_urls True
 
-conda install -y jinja2 networkx packaging pyaml setuptools git curl
-conda install -y "conda-build=$CONDA_BUILD_VERSION" conda-verify
+conda install -y -n base "conda-build=$CONDA_BUILD_VERSION" conda-verify
+conda install -y jinja2 networkx packaging pyaml setuptools
+conda install -y curl git patch
 
-pip install rfc3987
-
-conda clean -y -st
+conda clean -y --all

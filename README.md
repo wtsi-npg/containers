@@ -12,7 +12,16 @@ builds where curl is later dropped.
 A base image with curl and gosu installed, intended for multi-stage
 builds where curl is later dropped.
 
+### base/centos/7 ###
+
+A base image with gosu installed.
+
 ### conda/ubuntu/16.04 ###
+
+A Conda package-building image with Conda, conda-build and
+conda-verify installed.
+
+### conda/centos/7 ###
 
 A Conda package-building image with Conda, conda-build and
 conda-verify installed.
