@@ -31,11 +31,12 @@ preconfigured 'irods' user is:
      "irods_user_name": "irods",
      "irods_zone_name": "testZone",
      "irods_plugins_home": <path to iRODS plugins>,
-     "irods_default_resource": "testResc"
-     }
+     "irods_default_resource": <resource name>
+    }
 
-The server has a simple replication resource configured where each
-data object will be repliacted to two filesystem vaults:
+Two resources are configured; a simple resource named "testResc" and a
+replication resource named "replResc" where each data object will be
+replicated to two filesystem vaults:
 
     resource name: testResc
     id: 10018

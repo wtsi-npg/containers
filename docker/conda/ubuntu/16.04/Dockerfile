@@ -1,4 +1,4 @@
-FROM wsinpg/ub-12.04-base:latest as installer
+FROM wsinpg/ub-16.04-base:latest as installer
 
 ENV CONDA_GROUP_ID=32001 \
     LANG=en_GB.UTF-8 \
@@ -22,7 +22,7 @@ RUN apt-get update && \
     chgrp -R conda /opt/conda && \
     chmod -R g=u /opt/conda
 
-FROM wsinpg/ub-12.04-base:latest
+FROM wsinpg/ub-16.04-base:latest
 
 ENV CONDA_GROUP_ID=32001 \
     LANG=en_GB.UTF-8 \
