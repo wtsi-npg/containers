@@ -27,6 +27,21 @@ cd /etc/irods/
 echo $(jq -f /opt/docker/irods/config/server_config.delta \
           ./server_config.json) > ./server_config.json
 
+# Patch core.re to set the default resource because sometimes iRODS
+# ignores the default resource set in either client or server config.
+# This bug affects:
+#
+# 4.2.7 (confirmed)
+# 4.2.8 (maybe
+# 4.2.9 ?
+#
+# The bug is still open after the release of 4.2.9, see:
+# https://github.com/irods/irods/issues/4692
+#
+echo "Applying workaround for https://github.com/irods/irods/issues/4692 in iRODS >=4.2.7"
+sed -i 's/acSetRescSchemeForCreate\(.*\)demoResc/acSetRescSchemeForCreate\1testResc/' /etc/irods/core.re
+sed -i 's/acSetRescSchemeForRepl\(.*\)demoResc/acSetRescSchemeForRepl\1testResc/' /etc/irods/core.re
+
 # Patch the irods user environment to remove the transient hostname of
 # the build container
 cd /var/lib/irods/.irods/
@@ -70,7 +85,7 @@ sudo su irods -c "iadmin addchildtoresc replResc unixfs2"
 # Put version-specific hackery here
 case "$IRODS_VERSION" in
     4.2.7)
-        echo Applying workaround for https://github.com/irods/irods/issues/4672 in iRODS 4.2.7
+        echo "Applying workaround for https://github.com/irods/irods/issues/4672 in iRODS 4.2.7"
         cd /tmp
         for user in public rodsadmin
         do
