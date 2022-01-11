@@ -12,9 +12,8 @@ DOCKER_ARGS ?= --pull --no-cache # IMPORTANT to get security updates
 
 image_names := ub-16.04-base ub-18.04-base
 image_names += ub-16.04-irods-4.2.7
-image_names += ub-18.04-irods-4.2.8
-image_names += ub-18.04-irods-4.2.9
 image_names += ub-18.04-irods-4.2.10
+image_names += ub-18.04-irods-4.2.11
 
 image_names += centos-7-base
 image_names += centos-7-conda
@@ -66,22 +65,6 @@ ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	--tag $(TAG_NAMESPACE)/ub-16.04-irods-4.2.7:$(TAG) --file $< ./irods
 	touch $@
 
-ub-18.04-irods-4.2.8.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.8 \
-	--label $(LABEL_NAMESPACE).repository=$(git_url) \
-	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.8:latest \
-	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.8:$(TAG) --file $< ./irods
-	touch $@
-
-ub-18.04-irods-4.2.9.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.9 \
-	--label $(LABEL_NAMESPACE).repository=$(git_url) \
-	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.9:latest \
-	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.9:$(TAG) --file $< ./irods
-	touch $@
-
 ub-18.04-irods-4.2.10.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.10 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
@@ -89,6 +72,15 @@ ub-18.04-irods-4.2.10.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.10:latest \
 	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.10:$(TAG) --file $< ./irods
 	touch $@
+
+ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
+	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.11 \
+	--label $(LABEL_NAMESPACE).repository=$(git_url) \
+	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
+	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.11:latest \
+	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.11:$(TAG) --file $< ./irods
+	touch $@
+
 
 clean:
 	rm -f $(foreach image_name,$(image_names), $(image_name)*)

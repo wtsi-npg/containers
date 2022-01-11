@@ -1,6 +1,6 @@
 FROM wsinpg/ub-18.04-base:latest
 
-ARG IRODS_VERSION=4.2.10
+ARG IRODS_VERSION=4.2.11
 ARG IRODS_PACKAGES_URL=https://packages.irods.org
 ARG UBUNTU_RELEASE=bionic
 
