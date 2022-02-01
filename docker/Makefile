@@ -6,7 +6,7 @@ else
 TAG_NAMESPACE?=wsinpg
 endif
 
-DOCKER_ARGS ?= --pull --no-cache # IMPORTANT to get security updates
+DOCKER_ARGS ?= --pull --no-cache --platform linux/amd64# IMPORTANT to get security updates
 
 .PHONY: clean
 
