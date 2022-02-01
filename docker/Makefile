@@ -74,7 +74,7 @@ ub-18.04-irods-4.2.10.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	touch $@
 
 ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.11 \
+	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.11-1~bionic \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.11:latest \
