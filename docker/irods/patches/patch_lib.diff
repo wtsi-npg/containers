@@ -1,0 +1,23 @@
+--- lib.py~	2021-12-17 18:41:54.000000000 +0000
++++ lib.py	2022-02-01 15:43:27.823010011 +0000
+@@ -145,15 +145,15 @@
+             for lines in text])
+
+ def get_pids_executing_binary_file(binary_file_path):
+-    def get_exe(process):
++    def get_name(process):
+         if psutil.version_info >= (2,0):
+-            return process.exe()
+-        return process.exe
+-    abspath = os.path.abspath(binary_file_path)
++            return process.name()
++        return process.name
++
+     pids = []
+     for p in psutil.process_iter():
+         try:
+-            if abspath == get_exe(p):
++            if "irodsServer" == get_name(p):
+                 pids.append(p.pid)
+         except (psutil.NoSuchProcess, psutil.AccessDenied):
+             pass
