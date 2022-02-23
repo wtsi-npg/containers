@@ -43,7 +43,7 @@ jobs:
             export TAG=$(git describe --always)
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-16.04-base:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-18.04-base:$TAG
-            docker push ghcr.io/${{ env.REPO_OWNER }}/ub-16.04-conda:$TAG
+            docker push ghcr.io/${{ env.REPO_OWNER }}/centos-7-conda:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-16.04-irods-4.2.7:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-18.04-irods-4.2.10:$TAG
             docker push ghcr.io/${{ env.REPO_OWNER }}/ub-18.04-irods-4.2.11:$TAG
