@@ -12,8 +12,9 @@ echo "Starting with USER: $CONDA_USER, " \
 
 groupmod --gid $CONDA_GROUP_ID conda
 
-useradd --shell /bin/bash --uid $CONDA_USER_ID --gid $CONDA_GROUP_ID \
-        --non-unique --create-home $CONDA_USER --comment ""
+id -u $CONDA_USER >/dev/null 2>&1 ||\
+    useradd --shell /bin/bash --uid $CONDA_USER_ID --gid $CONDA_GROUP_ID \
+            --non-unique --create-home $CONDA_USER --comment ""
 
 export USER=$CONDA_USER
 export HOME=/home/$USER

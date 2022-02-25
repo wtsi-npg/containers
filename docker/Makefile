@@ -6,7 +6,7 @@ else
 TAG_NAMESPACE?=wsinpg
 endif
 
-DOCKER_ARGS ?= --pull --no-cache --platform linux/amd64# IMPORTANT to get security updates
+DOCKER_ARGS ?= --platform linux/amd64
 
 .PHONY: clean
 
@@ -17,6 +17,10 @@ image_names += ub-18.04-irods-4.2.11
 
 image_names += centos-7-base
 image_names += centos-7-conda
+image_names += centos-7-conda-build
+
+image_names += md-bullseye-base
+image_names += md-bullseye-conda
 
 git_url=$(shell git remote get-url origin)
 git_commit=$(shell git log --pretty=format:'%H' -n 1)
@@ -49,12 +53,36 @@ ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	--tag $(TAG_NAMESPACE)/ub-18.04-base:$(TAG) --file $< ./base
 	touch $@
 
+md-bullseye-base.$(TAG): base/minideb/bullseye/Dockerfile
+	docker build $(DOCKER_ARGS) \
+	--label $(LABEL_NAMESPACE).repository=$(git_url) \
+	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
+	--tag $(TAG_NAMESPACE)/md-bullseye-base:latest \
+	--tag $(TAG_NAMESPACE)/md-bullseye-base:$(TAG) --file $< ./base
+	touch $@
+
 centos-7-conda.$(TAG): conda/centos/7/Dockerfile centos-7-base.$(TAG)
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(TAG_NAMESPACE)/centos-7-conda:latest \
 	--tag $(TAG_NAMESPACE)/centos-7-conda:$(TAG) --file $< ./conda
+	touch $@
+
+centos-7-conda-build.$(TAG): conda/centos/7/build/Dockerfile centos-7-conda.$(TAG)
+	docker build $(DOCKER_ARGS) \
+	--label $(LABEL_NAMESPACE).repository=$(git_url) \
+	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
+	--tag $(TAG_NAMESPACE)/centos-7-conda-build:latest \
+	--tag $(TAG_NAMESPACE)/centos-7-conda-build:$(TAG) --file $< ./conda
+	touch $@
+
+md-bullseye-conda.$(TAG): conda/minideb/bullseye/Dockerfile md-bullseye-base.$(TAG)
+	docker build $(DOCKER_ARGS) \
+	--label $(LABEL_NAMESPACE).repository=$(git_url) \
+	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
+	--tag $(TAG_NAMESPACE)/md-bullseye-conda:latest \
+	--tag $(TAG_NAMESPACE)/md-bullseye-conda:$(TAG) --file $< ./conda
 	touch $@
 
 ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
@@ -80,7 +108,6 @@ ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.11:latest \
 	--tag $(TAG_NAMESPACE)/ub-18.04-irods-4.2.11:$(TAG) --file $< ./irods
 	touch $@
-
 
 clean:
 	rm -f $(foreach image_name,$(image_names), $(image_name)*)
