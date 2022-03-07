@@ -1,0 +1,1 @@
+An image with Conda, conda-build and build tools installed.
