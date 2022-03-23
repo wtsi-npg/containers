@@ -1,4 +1,6 @@
-FROM wsinpg/md-bullseye-base:latest as installer
+ARG DOCKER_TAG_PREFIX=wsinpg
+
+FROM $DOCKER_TAG_PREFIX/md-bullseye-base:latest as installer
 
 ENV DEBIAN_FRONTEND=noninteractive \
     CONDA_GROUP_ID=32001 \
@@ -32,7 +34,7 @@ RUN apt-get install -q -y --no-install-recommends \
     chgrp -R conda /opt/conda && \
     chmod -R g=u /opt/conda
 
-FROM wsinpg/md-bullseye-base:latest
+FROM $DOCKER_TAG_PREFIX/md-bullseye-base:latest
 
 ENV DEBIAN_FRONTEND=noninteractive \
     CONDA_GROUP_ID=32001

@@ -1,4 +1,6 @@
-FROM wsinpg/ub-16.04-base:latest
+ARG DOCKER_TAG_PREFIX=wsinpg
+
+FROM $DOCKER_TAG_PREFIX/ub-16.04-base:latest
 
 ARG IRODS_VERSION=4.2.7
 ARG IRODS_PACKAGES_URL=https://packages.irods.org
