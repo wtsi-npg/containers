@@ -16,15 +16,22 @@ builds where curl is later dropped.
 
 A base image with gosu installed.
 
-### conda/ubuntu/16.04 ###
+### base/minideb/bullseye
 
-A Conda package-building image with Conda, conda-build and
-conda-verify installed.
+A base image with gosu installed.
 
 ### conda/centos/7 ###
 
-A Conda package-building image with Conda, conda-build and
-conda-verify installed.
+A Conda runtime image with Conda installed.
+
+### conda/centos/7/build ###
+
+A Conda build image with Conda and some of its supporting build
+packages installed, including conda-build and conda-verify.
+
+### conda/minideb/bullseye ###
+
+A Conda runtime image with Conda installed.
 
 ### irods/ubuntu/16.04 ###
 
