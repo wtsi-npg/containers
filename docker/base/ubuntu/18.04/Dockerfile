@@ -12,7 +12,7 @@ RUN apt-get update && \
     curl \
     gpg \
     unattended-upgrades && \
-    unattended-upgrade -d -v 
+    unattended-upgrade -d -v
 
 RUN GOSU_VERSION=$GOSU_VERSION /opt/docker/base/scripts/install_gosu.sh && \
     chmod +x /opt/docker/base/scripts/docker-entrypoint.sh

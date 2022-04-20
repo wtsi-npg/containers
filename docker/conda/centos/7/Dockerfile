@@ -1,4 +1,6 @@
-FROM wsinpg/centos-7-base:latest as installer
+ARG DOCKER_TAG_PREFIX=wsinpg
+
+FROM $DOCKER_TAG_PREFIX/centos-7-base:latest as installer
 
 ENV CONDA_VERSION=4.10.3 \
     CONDA_SHA256=1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f \
@@ -21,7 +23,7 @@ RUN yum -y update && \
     chgrp -R conda /opt/conda && \
     chmod -R g=u /opt/conda
 
-FROM wsinpg/centos-7-base:latest
+FROM $DOCKER_TAG_PREFIX/centos-7-base:latest
 
 ENV CONDA_GROUP_ID=32001 \
     LANG=en_GB.UTF-8 \

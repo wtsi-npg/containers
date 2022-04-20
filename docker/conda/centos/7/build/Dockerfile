@@ -1,4 +1,6 @@
-FROM wsinpg/centos-7-conda:latest
+ARG DOCKER_TAG_PREFIX=wsinpg
+
+FROM $DOCKER_TAG_PREFIX/centos-7-conda:latest
 
 COPY . /opt/docker/conda
 
