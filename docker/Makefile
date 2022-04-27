@@ -10,7 +10,7 @@ DOCKER_USER?=wsinpg
 DOCKER_TAG_PREFIX?=$(DOCKER_USER)
 endif
 
-DOCKER_ARGS ?= --platform linux/amd64 --build-arg DOCKER_TAG_PREFIX=$(DOCKER_TAG_PREFIX)
+DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --build-arg DOCKER_TAG_PREFIX=$(DOCKER_TAG_PREFIX)
 
 .PHONY: clean push
 
@@ -18,6 +18,8 @@ image_names := ub-16.04-base ub-18.04-base
 image_names += ub-16.04-irods-4.2.7
 image_names += ub-18.04-irods-4.2.10
 image_names += ub-18.04-irods-4.2.11
+
+image_names += md-bullseye-irods-clients-4.2.11
 
 image_names += centos-7-base
 image_names += centos-7-conda
@@ -114,6 +116,14 @@ ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.11:latest \
 	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.11:$(TAG) --file $< ./irods
+	touch $@
+
+md-bullseye-irods-clients-4.2.11.$(TAG): irods_clients/minideb/bullseye/Dockerfile md-bullseye-conda.$(TAG)
+	docker build $(DOCKER_ARGS) \
+	--label $(LABEL_NAMESPACE).repository=$(git_url) \
+	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
+	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-irods-clients-4.2.11:latest \
+	--tag $(DOCKER_TAG_PREFIX)/mb-bullseye-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
 	touch $@
 
 %.$(TAG).pushed: %.$(TAG)
