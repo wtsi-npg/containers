@@ -6,7 +6,8 @@ FROM $DOCKER_TAG_PREFIX/md-bullseye-conda:latest as installer
 ADD . /opt/docker/irods_clients
 
 RUN /opt/docker/irods_clients/scripts/install_irods_icommands.sh && \
-    /opt/docker/irods_clients/scripts/install_baton.sh
+    /opt/docker/irods_clients/scripts/install_baton.sh && \
+    /opt/docker/irods_clients/scripts/install_samtools.sh
 
 FROM $DOCKER_TAG_PREFIX/md-bullseye-base:latest
 
