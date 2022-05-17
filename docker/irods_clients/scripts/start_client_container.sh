@@ -11,7 +11,7 @@ IRODS_VERSION=${IRODS_VERSION:-"4.2.11"}
 IRODS_ENVIRONMENT_FILE=${IRODS_ENVIRONMENT_FILE:-"$HOME/.irods/irods_environment.json"}
 
 DOCKER_TAG=${DOCKER_TAG:-latest}
-DOCKER_IMAGE=${DOCKER_IMAGE:-"wsipg/md-bullseye-irods-clients-${IRODS_VERSION}:${DOCKER_TAG}"}
+DOCKER_IMAGE=${DOCKER_IMAGE:-"wsinpg/md-bullseye-irods-clients-${IRODS_VERSION}:${DOCKER_TAG}"}
 
 # The default container name matches that used by the irods_client_wrapper.sh
 # script
