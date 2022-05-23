@@ -1,25 +1,31 @@
-FROM ubuntu:16.04 as installer
+FROM bitnami/minideb:bullseye-amd64 as installer
 
-ENV GOSU_VERSION=1.14
+ENV DEBIAN_FRONTEND=noninteractive \
+    GOSU_VERSION=1.14
 
 COPY ./scripts /opt/docker/base/scripts
 
-RUN apt-get update && \
-    apt-get install -q -y \
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends \
     apt-utils \
     bzip2 \
     ca-certificates \
     curl \
+    dirmngr \
+    gpg \
+    gpg-agent \
     unattended-upgrades && \
-    unattended-upgrade -d -v
+    unattended-upgrade -d -v 
 
 RUN GOSU_VERSION=$GOSU_VERSION /opt/docker/base/scripts/install_gosu.sh && \
     chmod +x /opt/docker/base/scripts/docker-entrypoint.sh
 
-FROM ubuntu:16.04
+FROM bitnami/minideb:bullseye-amd64
 
-RUN apt-get update && \
-    apt-get install -q -y \
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends \
     apt-utils \
     unattended-upgrades && \
     unattended-upgrade -d -v && \

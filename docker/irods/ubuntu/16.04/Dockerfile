@@ -1,4 +1,6 @@
-FROM wsinpg/ub-16.04-base:latest
+ARG DOCKER_TAG_PREFIX=wsinpg
+
+FROM $DOCKER_TAG_PREFIX/ub-16.04-base:latest
 
 ARG IRODS_VERSION=4.2.7
 ARG IRODS_PACKAGES_URL=https://packages.irods.org
@@ -8,6 +10,7 @@ WORKDIR /opt/docker/irods
 
 COPY ./scripts/*.sh ./scripts/
 COPY ./config/* ./config/
+COPY ./patches/* ./patches/
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
@@ -21,6 +24,7 @@ RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     postgresql \
     jq \
+    patch \
     irods-server="$IRODS_VERSION" \
     irods-runtime="$IRODS_VERSION" \
     irods-database-plugin-postgres="$IRODS_VERSION" \

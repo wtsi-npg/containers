@@ -2,7 +2,7 @@
 
 set -ex
 
-GOSU_VERSION=${GOSU_VERSION:-1.11}
+GOSU_VERSION=${GOSU_VERSION:-1.14}
 ARCH=${ARCH:-amd64}
 PREFIX=${PREFIX:-/usr/local}
 
