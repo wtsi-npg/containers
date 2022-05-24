@@ -28,9 +28,9 @@ jobs:
       - name: Build and push
         run: |
             cd docker
-            make GITHUB_ACTOR=${{ github.actor }}
+            make GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }} GITHUB_ACTOR=${{ github.actor }}
 
             docker image prune --force
             docker images
 
-            make push GITHUB_ACTIONS=${{ github.action }} GITHUB_ACTOR=${{ github.actor }}
+            make push GITHUB_ACTIONS=${{ env.GITHUB_ACTIONS }} GITHUB_ACTOR=${{ github.actor }}
