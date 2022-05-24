@@ -1,8 +1,8 @@
 TAG=$(shell git describe --always)
 LABEL_NAMESPACE=uk.ac.sanger
-ifdef GITHUB_ACTIONS
+ifeq ($(GITHUB_ACTIONS),true)
 DOCKER_REGISTRY?=ghcr.io
-DOCKER_USER?=$(GITHUB_ACTOR)
+DOCKER_USER?=$(GITHUB_REPOSITORY_OWNER)
 DOCKER_TAG_PREFIX?=$(DOCKER_REGISTRY)/$(DOCKER_USER)
 else
 DOCKER_REGISTRY=docker.io
@@ -123,7 +123,7 @@ md-bullseye-irods-clients-4.2.11.$(TAG): irods_clients/minideb/bullseye/Dockerfi
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-irods-clients-4.2.11:latest \
-	--tag $(DOCKER_TAG_PREFIX)/mb-bullseye-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
 	touch $@
 
 %.$(TAG).pushed: %.$(TAG)
