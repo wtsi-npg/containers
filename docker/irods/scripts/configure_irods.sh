@@ -17,6 +17,11 @@ case "$IRODS_VERSION" in
         patch /var/lib/irods/scripts/irods/lib.py /opt/docker/irods/patches/patch_lib.diff
         python /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/setup_irods.py.in
         ;;
+    4.3.*)
+        patch /var/lib/irods/scripts/irods/controller.py /opt/docker/irods/patches/patch_controller.diff
+        sudo python3 /var/lib/irods/scripts/setup_rsyslog_and_logrotate.py # automatic setup for these has been removed
+        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
+        ;;
     *)
         echo Unknown iRODS version "$IRODS_VERSION"
         exit 1

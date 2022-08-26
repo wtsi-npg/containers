@@ -44,7 +44,7 @@ This is a Docker image of a vanilla iRODS >=4.2.8 server that works
 out of the box. To be used for running tests only.
 
 The server version may be chosen by passing the Docker build argument
-`--build-arg IRODS_VERSION=<version>` (default is 4.2.10).
+`--build-arg IRODS_VERSION=<version>` (default is 4.3.0).
 
 ## Build instructions ##
 

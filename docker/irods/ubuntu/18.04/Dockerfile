@@ -2,7 +2,7 @@ ARG DOCKER_TAG_PREFIX=wsinpg
 
 FROM $DOCKER_TAG_PREFIX/ub-18.04-base:latest
 
-ARG IRODS_VERSION=4.2.11-1~bionic
+ARG IRODS_VERSION=4.3.0-1~bionic
 ARG IRODS_PACKAGES_URL=https://packages.irods.org
 ARG UBUNTU_RELEASE=bionic
 
@@ -27,6 +27,7 @@ RUN apt-get update && \
     postgresql \
     jq \
     patch \
+    rsyslog \
     irods-server="$IRODS_VERSION" \
     irods-runtime="$IRODS_VERSION" \
     irods-database-plugin-postgres="$IRODS_VERSION" \
