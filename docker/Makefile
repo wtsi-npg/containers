@@ -16,8 +16,8 @@ DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --build-arg DOCKER_TAG_PR
 
 image_names := ub-16.04-base ub-18.04-base
 image_names += ub-16.04-irods-4.2.7
-image_names += ub-18.04-irods-4.2.10
 image_names += ub-18.04-irods-4.2.11
+image_names += ub-18.04-irods-4.3.0
 
 image_names += md-bullseye-irods-clients-4.2.11
 
@@ -102,20 +102,20 @@ ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	--tag $(DOCKER_TAG_PREFIX)/ub-16.04-irods-4.2.7:$(TAG) --file $< ./irods
 	touch $@
 
-ub-18.04-irods-4.2.10.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.10 \
-	--label $(LABEL_NAMESPACE).repository=$(git_url) \
-	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.10:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.10:$(TAG) --file $< ./irods
-	touch $@
-
 ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.11-1~bionic \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.11:latest \
 	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.11:$(TAG) --file $< ./irods
+	touch $@
+
+ub-18.04-irods-4.3.0.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
+	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.3.0-1~bionic \
+	--label $(LABEL_NAMESPACE).repository=$(git_url) \
+	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
+	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.3.0:latest \
+	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.3.0:$(TAG) --file $< ./irods
 	touch $@
 
 md-bullseye-irods-clients-4.2.11.$(TAG): irods_clients/minideb/bullseye/Dockerfile md-bullseye-conda.$(TAG)

@@ -1,0 +1,21 @@
+--- controller.py~
++++ controller.py
+@@ -74,7 +74,7 @@ class IrodsController(object):
+         if server_pid >= 0:
+             try:
+                 server_proc = psutil.Process(server_pid)
+-                if server_proc.exe() and os.path.samefile(self.config.server_executable, server_proc.exe()):
++                if server_proc.name() == "irodsServer":
+                     return server_proc
+             except (psutil.NoSuchProcess, psutil.AccessDenied):
+                 return None
+@@ -291,9 +291,6 @@ class IrodsController(object):
+ def binary_matches(binary_path, proc):
+     if proc.is_running():
+         try:
+-            if proc.exe():
+-                return os.path.samefile(binary_path, proc.exe())
+-            else:
+                 return os.path.basename(binary_path) == proc.name()
+         except psutil.NoSuchProcess:
+             return False
