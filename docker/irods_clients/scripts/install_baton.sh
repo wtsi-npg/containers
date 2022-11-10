@@ -6,7 +6,7 @@ set -x
 # The iRODS client version should match the server version
 IRODS_VERSION=${IRODS_VERSION:-"4.2.11"}
 # The baton version should generally be the most recent release
-BATON_VERSION=${BATON_VERSTION:-"3.2.0"}
+BATON_VERSION=${BATON_VERSTION:-"4.0.0"}
 
 # You can use these defaults with a Conda container built from ./docker/conda
 # in this repository
