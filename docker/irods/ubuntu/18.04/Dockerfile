@@ -43,7 +43,8 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)" \
     irods-dev="${IRODS_VERSION}-1~$(lsb_release -sc)" && \
     apt-get install -q -y -f && \
-    unattended-upgrade -d -v && \
+    unattended-upgrade -v && \
+    apt-get remove -q -y unattended-upgrades && \
     apt-get autoremove -q -y && \
     apt-get clean -q -y && \
     rm -rf /var/lib/apt/lists/*

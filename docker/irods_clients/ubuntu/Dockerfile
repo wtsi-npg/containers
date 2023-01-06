@@ -137,7 +137,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     liblzma5 \
     zlib1g \
     unattended-upgrades && \
-    unattended-upgrade -d -v && \
+    unattended-upgrade -v && \
     apt-get remove -q -y unattended-upgrades && \
     apt-get autoremove -q -y && \
     apt-get clean -q -y && \

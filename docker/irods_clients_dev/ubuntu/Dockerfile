@@ -56,7 +56,7 @@ RUN apt-get update && \
     ssh \
     valgrind \
     unattended-upgrades && \
-    unattended-upgrade -d -v
+    unattended-upgrade -v
 
 ENV CPPFLAGS="-I/usr/include/irods" \
     CK_DEFAULT_TIMEOUT=20

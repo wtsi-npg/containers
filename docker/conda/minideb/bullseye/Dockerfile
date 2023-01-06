@@ -57,7 +57,7 @@ ENV LANG=en_GB.UTF-8 \
     rsync \
     vim \
     unattended-upgrades && \
-    unattended-upgrade -d -v && \
+    unattended-upgrade -v && \
     apt-get remove -q -y unattended-upgrades && \
     apt-get autoremove -q -y && \
     apt-get clean -q -y && \

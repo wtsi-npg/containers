@@ -25,7 +25,7 @@ ENV LANG=en_GB.UTF-8 \
 
 RUN apt-get install -q -y --no-install-recommends \
     unattended-upgrades && \
-    unattended-upgrade -d -v && \
+    unattended-upgrade -v && \
     apt-get remove -q -y unattended-upgrades && \
     apt-get autoremove -q -y && \
     apt-get clean && \
