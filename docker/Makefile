@@ -23,6 +23,8 @@ image_names += ub-18.04-irods-clients-dev-4.2.11
 image_names += ub-18.04-irods-clients-dev-4.3.0
 image_names += ub-20.04-irods-clients-dev-4.3.0
 
+image_names += ub-18.04-irods-clients-4.2.11
+
 image_names += md-bullseye-irods-clients-4.2.11
 
 image_names += centos-7-base
@@ -130,6 +132,19 @@ md-bullseye-irods-clients-4.2.11.$(TAG): irods_clients/minideb/bullseye/Dockerfi
 	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
 	touch $@
 
+ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-base.$(TAG)
+	docker build $(DOCKER_ARGS) \
+	--build-arg BASE_IMAGE=wsinpg/ub-18.04-base \
+	--build-arg IRODS_VERSION=4.2.11 \
+	--build-arg BATON_VERSION=4.0.0 \
+	--build-arg HTSLIB_VERSION=1.16 \
+	--build-arg SAMTOOLS_VERSION=1.16.1 \
+	--label $(LABEL_NAMESPACE).repository=$(git_url) \
+	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
+	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-4.2.11:latest \
+	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
+	touch $@
+
 ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	docker build $(DOCKER_ARGS) \
 	--build-arg BASE_IMAGE=ubuntu:bionic \
@@ -137,7 +152,7 @@ ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:$(TAG) --file $< ./irods
+	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-18.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
@@ -147,7 +162,7 @@ ub-18.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.3.0:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods
+	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-20.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
@@ -157,7 +172,7 @@ ub-20.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(DOCKER_TAG_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods
+	--tag $(DOCKER_TAG_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 %.$(TAG).pushed: %.$(TAG)
