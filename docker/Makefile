@@ -177,6 +177,7 @@ ub-20.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 
 %.$(TAG).pushed: %.$(TAG)
 	docker push $(DOCKER_TAG_PREFIX)/$*:$(TAG)
+	docker push $(DOCKER_TAG_PREFIX)/$*:latest
 	touch $@
 
 remote-clean:
