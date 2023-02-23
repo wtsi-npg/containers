@@ -1,4 +1,4 @@
-TAG=?$(shell git describe --always)
+TAG?=$(shell git describe --always)
 DOCKER_REGISTRY?=docker.io
 DOCKER_USER?=wsinpg
 DOCKER_PREFIX?=$(DOCKER_REGISTRY)/$(DOCKER_USER)
