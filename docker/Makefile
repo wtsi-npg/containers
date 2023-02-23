@@ -3,14 +3,13 @@ LABEL_NAMESPACE=uk.ac.sanger
 ifeq ($(GITHUB_ACTIONS),true)
 DOCKER_REGISTRY?=ghcr.io
 DOCKER_USER?=$(GITHUB_REPOSITORY_OWNER)
-DOCKER_TAG_PREFIX?=$(DOCKER_REGISTRY)/$(DOCKER_USER)
 else
-DOCKER_REGISTRY=docker.io
+DOCKER_REGISTRY?=docker.io
 DOCKER_USER?=wsinpg
-DOCKER_TAG_PREFIX?=$(DOCKER_USER)
 endif
 
-DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --build-arg DOCKER_TAG_PREFIX=$(DOCKER_TAG_PREFIX)
+DOCKER_PREFIX=?$(DOCKER_REGISTRY)/$(DOCKER_USER)
+DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --build-arg DOCKER_PREFIX=$(DOCKER_PREFIX)
 
 .PHONY: clean push
 
@@ -48,88 +47,88 @@ centos-7-base.$(TAG): base/centos/7/Dockerfile
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/centos-7-base:latest \
-	--tag $(DOCKER_TAG_PREFIX)/centos-7-base:$(TAG) --file $< ./base
+	--tag $(DOCKER_PREFIX)/centos-7-base:latest \
+	--tag $(DOCKER_PREFIX)/centos-7-base:$(TAG) --file $< ./base
 	touch $@
 
 ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-16.04-base:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-16.04-base:$(TAG) --file $< ./base
+	--tag $(DOCKER_PREFIX)/ub-16.04-base:latest \
+	--tag $(DOCKER_PREFIX)/ub-16.04-base:$(TAG) --file $< ./base
 	touch $@
 
 ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-base:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-base:$(TAG) --file $< ./base
+	--tag $(DOCKER_PREFIX)/ub-18.04-base:latest \
+	--tag $(DOCKER_PREFIX)/ub-18.04-base:$(TAG) --file $< ./base
 	touch $@
 
 md-bullseye-base.$(TAG): base/minideb/bullseye/Dockerfile
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-base:latest \
-	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-base:$(TAG) --file $< ./base
+	--tag $(DOCKER_PREFIX)/md-bullseye-base:latest \
+	--tag $(DOCKER_PREFIX)/md-bullseye-base:$(TAG) --file $< ./base
 	touch $@
 
 centos-7-conda.$(TAG): conda/centos/7/Dockerfile centos-7-base.$(TAG)
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/centos-7-conda:latest \
-	--tag $(DOCKER_TAG_PREFIX)/centos-7-conda:$(TAG) --file $< ./conda
+	--tag $(DOCKER_PREFIX)/centos-7-conda:latest \
+	--tag $(DOCKER_PREFIX)/centos-7-conda:$(TAG) --file $< ./conda
 	touch $@
 
 centos-7-conda-build.$(TAG): conda/centos/7/build/Dockerfile centos-7-conda.$(TAG)
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/centos-7-conda-build:latest \
-	--tag $(DOCKER_TAG_PREFIX)/centos-7-conda-build:$(TAG) --file $< ./conda
+	--tag $(DOCKER_PREFIX)/centos-7-conda-build:latest \
+	--tag $(DOCKER_PREFIX)/centos-7-conda-build:$(TAG) --file $< ./conda
 	touch $@
 
 md-bullseye-conda.$(TAG): conda/minideb/bullseye/Dockerfile md-bullseye-base.$(TAG)
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-conda:latest \
-	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-conda:$(TAG) --file $< ./conda
+	--tag $(DOCKER_PREFIX)/md-bullseye-conda:latest \
+	--tag $(DOCKER_PREFIX)/md-bullseye-conda:$(TAG) --file $< ./conda
 	touch $@
 
 ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-16.04-irods-4.2.7:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-16.04-irods-4.2.7:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/ub-16.04-irods-4.2.7:latest \
+	--tag $(DOCKER_PREFIX)/ub-16.04-irods-4.2.7:$(TAG) --file $< ./irods
 	touch $@
 
 ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.2.11 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.11:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.2.11:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.2.11:latest \
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.2.11:$(TAG) --file $< ./irods
 	touch $@
 
 ub-18.04-irods-4.3.0.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	docker build $(DOCKER_ARGS) --build-arg IRODS_VERSION=4.3.0 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.3.0:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-4.3.0:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.3.0:latest \
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.3.0:$(TAG) --file $< ./irods
 	touch $@
 
 md-bullseye-irods-clients-4.2.11.$(TAG): irods_clients/minideb/bullseye/Dockerfile md-bullseye-conda.$(TAG)
 	docker build $(DOCKER_ARGS) \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-irods-clients-4.2.11:latest \
-	--tag $(DOCKER_TAG_PREFIX)/md-bullseye-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/md-bullseye-irods-clients-4.2.11:latest \
+	--tag $(DOCKER_PREFIX)/md-bullseye-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-base.$(TAG)
@@ -141,8 +140,8 @@ ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-b
 	--build-arg SAMTOOLS_VERSION=1.16.1 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-4.2.11:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-4.2.11:latest \
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/Dockerfile
@@ -151,8 +150,8 @@ ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--build-arg IRODS_VERSION=4.2.11 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:latest \
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-18.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
@@ -161,8 +160,8 @@ ub-18.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--build-arg IRODS_VERSION=4.3.0 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.3.0:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-18.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.3.0:latest \
+	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-20.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
@@ -171,13 +170,13 @@ ub-20.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--build-arg IRODS_VERSION=4.3.0 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
-	--tag $(DOCKER_TAG_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:latest \
-	--tag $(DOCKER_TAG_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:latest \
+	--tag $(DOCKER_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 %.$(TAG).pushed: %.$(TAG)
-	docker push $(DOCKER_TAG_PREFIX)/$*:$(TAG)
-	docker push $(DOCKER_TAG_PREFIX)/$*:latest
+	docker push $(DOCKER_PREFIX)/$*:$(TAG)
+	docker push $(DOCKER_PREFIX)/$*:latest
 	touch $@
 
 remote-clean:
