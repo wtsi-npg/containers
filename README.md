@@ -40,7 +40,7 @@ of the box. To be used for running tests only.
 
 ### irods/ubuntu/18.04 ###
 
-This is a Docker image of a vanilla iRODS >=4.2.8 server that works
+This is a Docker image of a vanilla iRODS >=4.2.11 server that works
 out of the box. To be used for running tests only.
 
 The server version may be chosen by passing the Docker build argument
@@ -51,24 +51,23 @@ The server version may be chosen by passing the Docker build argument
 A makefile is supplied that will by default build all images and add
 metadata to them based on `git describe`.
 
-`cd ./docker`
-`make`
+    cd ./docker
+    make
 
-# NPG Singularity images
+# NPG Singularity wrappers
 
-## The images
+This makefile will install proxies for running executables hosted in Docker
+containers, using Singularity. Currently, only iRODS client programs are
+available by this method.
 
-### singularity/baton/baton-2.1.0 ###
+The default install prefix is `/usr/local`, the default Docker image is
+`ub-18.04-irods-clients-4.2.11` and the defaul Docker tag is `latest`. See the
+makefile for the configurable options.
 
-This is a Singularity image of baton 2.1.0 built for iRODS 4.2.7.
+## Installation instructions ##
 
-## Build instructions ##
-
-A makefile is supplied that will by default build all images and add
-metadata to them based on `git describe`.
-
-`cd ./singularity`
-`make`
+    cd ./singularity
+    make install PREFIX=$HOME/.local DOCKER_IMAGE=ub-18.04-irods-clients-4.2.11 TAG=latest`
 
 ## Author
 
