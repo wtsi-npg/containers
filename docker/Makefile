@@ -8,7 +8,7 @@ DOCKER_REGISTRY?=docker.io
 DOCKER_USER?=wsinpg
 endif
 
-DOCKER_PREFIX=?$(DOCKER_REGISTRY)/$(DOCKER_USER)
+DOCKER_PREFIX?=$(DOCKER_REGISTRY)/$(DOCKER_USER)
 DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --build-arg DOCKER_PREFIX=$(DOCKER_PREFIX)
 
 .PHONY: clean push
