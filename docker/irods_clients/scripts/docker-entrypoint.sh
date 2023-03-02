@@ -21,6 +21,6 @@ export USER=$CLIENT_USER
 export HOME="$CLIENT_USER_HOME"
 export LOGNAME=$USER
 export MAIL=/var/spool/mail/$USER
-export PATH="/opt/conda/envs/irods/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 exec gosu $USER "$@"
