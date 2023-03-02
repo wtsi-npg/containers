@@ -14,6 +14,24 @@ from source where packages are not available.
 
 ## Usage
 
+### As a shell for interacting with iRODS
+
+The entrypoint for this image creates a local user `irodsuser` with a
+`UID` of `1001` whose `IRODS_ENVIRONMENT_FILE` is set to
+`/home/irodsuser/.irods/irods_environment.json`. The entrypoint has the
+following shell environment variables available to be set with the `-e`
+option:
+
+    CLIENT_USER_ID         # defaults to 1001
+    CLIENT_USER            # defaults to irodsuser
+    CLIENT_USER_HOME       # defaults to /home/${CLIENT_USER}
+    IRODS_ENVIRONMENT_FILE # defaults to ${CLIENT_USER_HOME}/.irods/irods_environment.json
+
+The iRODS user's home directory is not created automatically, the intention
+being to allow a host volume to be mounted there.
+
+### As a replacement for native clients
+
 The recommended way to use these clients as a direct replacement for
 e.g. the icommands (`ils`, `iget` etc), is via the wrapper script
 `irods_client_wrapper.sh` in `irods_clients/scripts`, which relies on
