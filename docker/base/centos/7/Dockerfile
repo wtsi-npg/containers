@@ -1,6 +1,6 @@
 FROM centos:7 as installer
 
-ENV GOSU_VERSION=1.14
+ENV GOSU_VERSION=1.16
 
 COPY ./scripts /opt/docker/base/scripts
 

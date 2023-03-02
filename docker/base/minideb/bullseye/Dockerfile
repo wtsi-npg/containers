@@ -1,7 +1,7 @@
 FROM bitnami/minideb:bullseye-amd64 as installer
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    GOSU_VERSION=1.14
+    GOSU_VERSION=1.16
 
 COPY ./scripts /opt/docker/base/scripts
 
