@@ -125,9 +125,9 @@ ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-b
 	docker build $(DOCKER_ARGS) \
 	--build-arg BASE_IMAGE=wsinpg/ub-18.04-base \
 	--build-arg IRODS_VERSION=4.2.11 \
-	--build-arg BATON_VERSION=4.0.0 \
-	--build-arg HTSLIB_VERSION=1.16 \
-	--build-arg SAMTOOLS_VERSION=1.16.1 \
+	--build-arg BATON_VERSION=4.0.1 \
+	--build-arg HTSLIB_VERSION=1.17 \
+	--build-arg SAMTOOLS_VERSION=1.17 \
 	--label $(LABEL_NAMESPACE).repository=$(git_url) \
 	--label $(LABEL_NAMESPACE).commit=$(git_commit) \
 	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-4.2.11:latest \
