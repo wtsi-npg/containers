@@ -68,9 +68,7 @@ RUN cd /tmp && \
     tar xfz baton-${BATON_VERSION}.tar.gz && \
     cd baton-${BATON_VERSION} && \
     ./configure && \
-    make install && \
-    cd /tmp && \
-    rm -rf /tmp/baton-${BATON_VERSION}*
+    make install
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2" && \
@@ -78,33 +76,23 @@ RUN cd /tmp && \
     cd htslib-${HTSLIB_VERSION} && \
     ./configure --enable-plugins --without-curses && \
     make install && \
-    ldconfig && \
-    cd /tmp && \
-    rm -rf /tmp/htslib-${HTSLIB_VERSION}*
+    ldconfig
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2" && \
     tar xfj samtools-${SAMTOOLS_VERSION}.tar.bz2 && \
     cd samtools-${SAMTOOLS_VERSION} && \
     ./configure --with-htslib=system --without-curses && \
-    make install && \
-    cd /tmp && \
-    rm -rf /tmp/samtools-${SAMTOOLS_VERSION}*
+    make install
 
 RUN cd /tmp && \
     git clone --depth 1 --branch ${HTSLIB_PLUGINS_VERSION} "https://github.com/samtools/htslib-plugins.git" && \
     cd htslib-plugins && \
-    make install && \
-    cd /tmp && \
-    rm -rf htslib-plugins*
+    make install
 
 FROM $BASE_IMAGE 
 
 ARG IRODS_VERSION="4.2.11"
-ARG BATON_VERSION="4.0.0"
-ARG HTSLIB_VERSION="1.16"
-ARG SAMTOOLS_VERSION="1.16.1"
-ARG HTSLIB_PLUGINS_VERSION="201712"
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \
