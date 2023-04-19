@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ARG BASE_IMAGE=ubuntu:bionic
 FROM $BASE_IMAGE as installer
 
@@ -92,6 +94,8 @@ RUN cd /tmp && \
 
 FROM $BASE_IMAGE 
 
+ARG DOCKER_IMAGE
+ARG DOCKER_TAG
 ARG IRODS_VERSION="4.2.11"
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
@@ -119,8 +123,9 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     apt-get install -q -y --no-install-recommends \
     irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)" \
     irods-runtime="${IRODS_VERSION}-1~$(lsb_release -sc)" \
+    jq \
     libjansson4 \
-    libbz2-1.0 \    
+    libbz2-1.0 \
     libcurl3 \
     liblzma5 \
     zlib1g \
@@ -131,8 +136,17 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     apt-get clean -q -y && \
     rm -rf /var/lib/apt/lists/*
 
+# Copy the installed baton and samtools applications
 COPY --from=installer /usr/local /usr/local
-COPY --from=installer /opt/docker/irods_clients/scripts/* /opt/docker/irods_clients/scripts/
+
+# Copy the singularity-wrapper scripts
+COPY --from=singularity ./scripts/* /usr/local/bin/
+COPY --from=installer /opt/docker/irods_clients/manifest.json /usr/local/etc/irods_clients/manifest.json
+
+# Configure the singularity-wrapper script
+ENV MANIFEST_PATH="/usr/local/etc/irods_clients/manifest.json"
+ENV DOCKER_IMAGE="$DOCKER_IMAGE"
+ENV DOCKER_TAG="$DOCKER_TAG"
 
 RUN ldconfig
 

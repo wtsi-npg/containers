@@ -56,18 +56,44 @@ metadata to them based on `git describe`.
 
 # NPG Singularity wrappers
 
-This makefile will install proxies for running executables hosted in Docker
-containers, using Singularity. Currently, only iRODS client programs are
-available by this method.
+Each container that provides command line programs is self-documenting
+and is able to install its own proxy wrappers outside of the container,
+to allow these programs to be run transparently.
 
-The default install prefix is `/usr/local`, the default Docker image is
-`ub-18.04-irods-clients-4.2.11` and the defaul Docker tag is `latest`. See the
-makefile for the configurable options.
+The images include the singularity-wrapper tool which allows programs to
+be listed and their wrappers installed. The install target should be set
+to a volume mounted into the container and the -p (install prefix) option
+of the tool set accordingly. The -h option will show online help.
 
-## Installation instructions ##
+e.g. Show online help:
 
-    cd ./singularity
-    make install PREFIX=$HOME/.local DOCKER_IMAGE=ub-18.04-irods-clients-4.2.11 TAG=latest`
+    $ docker run wsinpg/ub-18.04-irods-clients-4.2.11:latest \
+        singularity-wrapper -h
+
+e.g. List the programs provided by a container:
+
+    $ docker run wsinpg/ub-18.04-irods-clients-4.2.11:latest \
+        singularity-wrapper list
+    {
+        "package": "irods-clients",
+        "executable": [
+            "baton-chmod",
+            ...
+            "samtools"
+        ]
+    }
+
+e.g. Install wrappers to $PREFIX/bin:
+
+    $ docker run -v $PREFIX:/mnt/tmp \
+        wsinpg/ub-18.04-irods-clients-4.2.11:latest \
+          singularity-wrapper -p /mnt/tmp install
+
+    $ ls $PREFIX/bin
+    -rwxr-xr-x 1 kdj staff 406 Apr 12 15:47 baton-chmod
+    ...
+    -rwxr-xr-x 1 kdj staff 409 Apr 12 15:47 samtools
+
 
 ## Author
 
