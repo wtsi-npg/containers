@@ -44,6 +44,7 @@ RUN apt-get update && \
     automake \
     build-essential \
     check \
+    cmake \
     gdb \
     jq \
     lcov \
