@@ -9,6 +9,7 @@
         "baton-metaquery",
         "baton-put",
         "baton-specificquery",
+        "bcftools",
         "htsfile",
         "iadmin",
         "ibun",

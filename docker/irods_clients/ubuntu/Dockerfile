@@ -8,6 +8,7 @@ ARG IRODS_VERSION="4.2.11"
 ARG BATON_VERSION="4.1.0"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"
+ARG BCFTOOLS_VERSION="1.18"
 ARG HTSLIB_PLUGINS_VERSION="201712"
 
 COPY . /opt/docker/irods_clients
@@ -84,6 +85,13 @@ RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2" && \
     tar xfj samtools-${SAMTOOLS_VERSION}.tar.bz2 && \
     cd samtools-${SAMTOOLS_VERSION} && \
+    ./configure --with-htslib=system --without-curses && \
+    make install
+
+RUN cd /tmp && \
+    curl -sSL -O "https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2" && \
+    tar xfj bcftools-${BCFTOOLS_VERSION}.tar.bz2 && \
+    cd bcftools-${BCFTOOLS_VERSION} && \
     ./configure --with-htslib=system --without-curses && \
     make install
 

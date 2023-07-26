@@ -192,6 +192,7 @@ ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-b
 	--build-arg BATON_VERSION=4.1.0 \
 	--build-arg HTSLIB_VERSION=1.18 \
 	--build-arg SAMTOOLS_VERSION=1.18 \
+	--build-arg BCFTOOLS_VERSION=1.18 \
 	--label org.opencontainers.image.title="iRODS 4.2.11 clients, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -212,6 +213,7 @@ ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--build-arg BATON_VERSION=4.1.0 \
 	--build-arg HTSLIB_VERSION=1.18 \
 	--build-arg SAMTOOLS_VERSION=1.18 \
+	--build-arg BCFTOOLS_VERSION=1.18 \
 	--label org.opencontainers.image.title="iRODS 4.2.11 client development, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -233,6 +235,7 @@ ub-18.04-irods-clients-4.2.12.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-b
 	--build-arg BATON_VERSION=4.1.0 \
 	--build-arg HTSLIB_VERSION=1.18 \
 	--build-arg SAMTOOLS_VERSION=1.18 \
+	--build-arg BCFTOOLS_VERSION=1.18 \
 	--label org.opencontainers.image.title="iRODS 4.2.12 clients, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
