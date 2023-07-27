@@ -151,7 +151,6 @@ COPY --from=installer /usr/local /usr/local
 COPY --from=singularity ./scripts/* /usr/local/bin/
 COPY --from=installer /opt/docker/irods_clients/manifest.json /usr/local/irods_clients/etc/manifest.json
 COPY --from=installer /opt/docker/irods_clients/scripts/docker-entrypoint.sh /usr/local/irods_clients/bin/docker-entrypoint.sh
-COPY --from=installer /opt/docker/irods_clients/scripts/singularity-* /usr/local/bin/
 
 # Configure the singularity-wrapper script
 ENV MANIFEST_PATH="/usr/local/irods_clients/etc/manifest.json"
