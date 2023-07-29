@@ -129,6 +129,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     tee /etc/apt/sources.list.d/renci-irods.list && \
     apt-get update && \ 
     apt-get install -q -y --no-install-recommends \
+    gnuplot \
     irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)" \
     irods-runtime="${IRODS_VERSION}-1~$(lsb_release -sc)" \
     jq \
@@ -136,6 +137,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     libbz2-1.0 \
     libcurl3 \
     liblzma5 \
+    perl \
     zlib1g \
     unattended-upgrades && \
     unattended-upgrade -v && \
