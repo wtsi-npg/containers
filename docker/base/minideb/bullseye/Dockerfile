@@ -1,4 +1,4 @@
-FROM bitnami/minideb:bullseye-amd64 as installer
+FROM docker.io/bitnami/minideb:bullseye-amd64 as installer
 
 ENV DEBIAN_FRONTEND=noninteractive \
     GOSU_VERSION=1.16
@@ -21,7 +21,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 RUN GOSU_VERSION=$GOSU_VERSION /opt/docker/base/scripts/install_gosu.sh && \
     chmod +x /opt/docker/base/scripts/docker-entrypoint.sh
 
-FROM bitnami/minideb:bullseye-amd64
+FROM docker.io/bitnami/minideb:bullseye-amd64
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \

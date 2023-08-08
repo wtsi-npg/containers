@@ -6,8 +6,9 @@ FROM $BASE_IMAGE as installer
 # Other iRODS versions available on bionic are 4.3.0
 ARG IRODS_VERSION="4.2.11"
 ARG BATON_VERSION="4.1.0"
-ARG HTSLIB_VERSION="1.17"
-ARG SAMTOOLS_VERSION="1.17"
+ARG HTSLIB_VERSION="1.18"
+ARG SAMTOOLS_VERSION="1.18"
+ARG BCFTOOLS_VERSION="1.18"
 ARG HTSLIB_PLUGINS_VERSION="201712"
 
 COPY . /opt/docker/irods_clients
@@ -88,6 +89,13 @@ RUN cd /tmp && \
     make install
 
 RUN cd /tmp && \
+    curl -sSL -O "https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2" && \
+    tar xfj bcftools-${BCFTOOLS_VERSION}.tar.bz2 && \
+    cd bcftools-${BCFTOOLS_VERSION} && \
+    ./configure --with-htslib=system --without-curses && \
+    make install
+
+RUN cd /tmp && \
     git clone --depth 1 --branch ${HTSLIB_PLUGINS_VERSION} "https://github.com/samtools/htslib-plugins.git" && \
     cd htslib-plugins && \
     make install
@@ -121,6 +129,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     tee /etc/apt/sources.list.d/renci-irods.list && \
     apt-get update && \ 
     apt-get install -q -y --no-install-recommends \
+    gnuplot \
     irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)" \
     irods-runtime="${IRODS_VERSION}-1~$(lsb_release -sc)" \
     jq \
@@ -128,6 +137,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     libbz2-1.0 \
     libcurl3 \
     liblzma5 \
+    perl \
     zlib1g \
     unattended-upgrades && \
     unattended-upgrade -v && \
@@ -143,7 +153,6 @@ COPY --from=installer /usr/local /usr/local
 COPY --from=singularity ./scripts/* /usr/local/bin/
 COPY --from=installer /opt/docker/irods_clients/manifest.json /usr/local/irods_clients/etc/manifest.json
 COPY --from=installer /opt/docker/irods_clients/scripts/docker-entrypoint.sh /usr/local/irods_clients/bin/docker-entrypoint.sh
-COPY --from=installer /opt/docker/irods_clients/scripts/singularity-* /usr/local/bin/
 
 # Configure the singularity-wrapper script
 ENV MANIFEST_PATH="/usr/local/irods_clients/etc/manifest.json"
