@@ -82,6 +82,7 @@
         "plot-ampliconstats",
         "plot-bamstats",
         "plot-roh.py",
+        "plot-vcfstats",
         "psl2sam.pl",
         "run-roh.pl",
         "sam2vcf.pl",
