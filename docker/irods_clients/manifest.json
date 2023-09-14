@@ -16,6 +16,7 @@
         "bowtie2sam.pl",
         "color-chrs.pl",
         "export2sam.pl",
+        "fasta-sanitize.pl",
         "gff2gff.py",
         "guess-ploidy.py",
         "htsfile",
