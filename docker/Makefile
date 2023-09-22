@@ -15,11 +15,11 @@ DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --rm
 .PHONY: clean push
 
 image_names := ub-16.04-base ub-18.04-base ub-22.04-base
+
 image_names += ub-16.04-irods-4.2.7
 image_names += ub-18.04-irods-4.2.11
 image_names += ub-18.04-irods-4.2.12
 image_names += ub-18.04-irods-4.3.0
-
 image_names += ub-22.04-irods-4.3-nightly
 
 image_names += ub-16.04-irods-clients-dev-4.2.7
@@ -27,10 +27,12 @@ image_names += ub-18.04-irods-clients-dev-4.2.11
 image_names += ub-18.04-irods-clients-dev-4.2.12
 image_names += ub-18.04-irods-clients-dev-4.3.0
 image_names += ub-20.04-irods-clients-dev-4.3.0
+image_names += ub-22.04-irods-clients-dev-4.3-nightly
 
 image_names += ub-16.04-irods-clients-4.2.7
 image_names += ub-18.04-irods-clients-4.2.11
 image_names += ub-18.04-irods-clients-4.2.12
+image_names += ub-22.04-irods-clients-4.3-nightly
 
 git_url=$(shell git remote get-url origin)
 git_commit=$(shell git log --pretty=format:'%H' -n 1)
@@ -310,6 +312,25 @@ ub-20.04-irods-clients-dev-4.3.0.$(TAG): irods_clients_dev/ubuntu/Dockerfile
 	--tag $(DOCKER_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:latest \
 	--tag $(DOCKER_PREFIX)/ub-20.04-irods-clients-dev-4.3.0:$(TAG) --file $< ./irods_clients_dev
 	touch $@
+
+ub-20.04-irods-clients-dev-4.3-nightly.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfile
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
+	--build-context singularity=../singularity \
+	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
+	--build-arg BASE_IMAGE=ubuntu:22.04 \
+	--build-arg IRODS_VERSION=4.3-nightly \
+	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
+	--build-arg DOCKER_TAG=$(TAG) \
+	--label org.opencontainers.image.title="iRODS 4.3.0 client development, Ubuntu 20.04" \
+	--label org.opencontainers.image.source=$(git_url) \
+	--label org.opencontainers.image.revision=$(git_commit) \
+	--label org.opencontainers.image.version=$(TAG) \
+	--label org.opencontainers.image.created=$(NOW) \
+	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3-nightly:latest \
+	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3-nightly:$(TAG) --file $< ./irods_clients_dev
+	touch $@
+
 
 %.$(TAG).pushed: %.$(TAG)
 	docker push $(DOCKER_PREFIX)/$*:$(TAG)
