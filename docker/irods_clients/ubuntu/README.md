@@ -14,6 +14,18 @@ from source where packages are not available.
 
 ## Usage
 
+The Dockerfile supports these build arguments:
+
+- BASE_IMAGE (defaults to "ubuntu:18.04")
+- DOCKER_IMAGE (no default, must be supplied)
+- DOCKER_TAG (no default, must be supplied)
+- IRODS_VERSION (defaults to "4.2.11")
+- BATON_VERSION (defaults to "4.1.0")
+- HTSLIB_VERSION (defaults to "1.18")
+- SAMTOOLS_VERSION (defaults to "1.18")
+- BCFTOOLS_VERSION (defaults to "1.18")
+- HTSLIB_PLUGINS_VERSION (defaults to "201712")
+
 ### As a shell for interacting with iRODS
 
 The entrypoint for this image creates a local user `irodsuser` with a
