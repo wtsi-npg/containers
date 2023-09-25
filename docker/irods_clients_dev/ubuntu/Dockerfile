@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ubuntu:bionic
+ARG BASE_IMAGE=ubuntu:18.04
 FROM $BASE_IMAGE
 
 # Other versions available on bionic are 4.3.0
