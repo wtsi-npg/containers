@@ -14,11 +14,13 @@ DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --rm
 
 .PHONY: clean push
 
-image_names := ub-16.04-base ub-18.04-base
+image_names := ub-16.04-base ub-18.04-base ub-22.04-base
 image_names += ub-16.04-irods-4.2.7
 image_names += ub-18.04-irods-4.2.11
 image_names += ub-18.04-irods-4.2.12
 image_names += ub-18.04-irods-4.3.0
+
+image_names += ub-22.04-irods-4.3-nightly
 
 image_names += ub-18.04-irods-clients-dev-4.2.11
 image_names += ub-18.04-irods-clients-dev-4.2.12
@@ -79,6 +81,18 @@ ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	--label org.opencontainers.image.created=$(NOW) \
 	--tag $(DOCKER_PREFIX)/ub-18.04-base:latest \
 	--tag $(DOCKER_PREFIX)/ub-18.04-base:$(TAG) --file $< ./base
+	touch $@
+
+ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
+	docker build $(DOCKER_ARGS) \
+	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
+	--label org.opencontainers.image.title="Base image, Ubuntu 22.04" \
+	--label org.opencontainers.image.source=$(git_url) \
+	--label org.opencontainers.image.revision=$(git_commit) \
+	--label org.opencontainers.image.version=$(TAG) \
+	--label org.opencontainers.image.created=$(NOW) \
+	--tag $(DOCKER_PREFIX)/ub-22.04-base:latest \
+	--tag $(DOCKER_PREFIX)/ub-22.04-base:$(TAG) --file $< ./base
 	touch $@
 
 md-bullseye-base.$(TAG): base/minideb/bullseye/Dockerfile
@@ -178,6 +192,19 @@ ub-18.04-irods-4.3.0.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	--label org.opencontainers.image.created=$(NOW) \
 	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.3.0:latest \
 	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.3.0:$(TAG) --file $< ./irods
+	touch $@
+
+ub-22.04-irods-4.3-nightly.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
+	docker build $(DOCKER_ARGS) \
+	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
+	--build-arg IRODS_VERSION=4.3-nightly \
+	--label org.opencontainers.image.title="iRODS 4.3-nightly server, Ubuntu 22.04" \
+	--label org.opencontainers.image.source=$(git_url) \
+	--label org.opencontainers.image.revision=$(git_commit) \
+	--label org.opencontainers.image.version=$(TAG) \
+	--label org.opencontainers.image.created=$(NOW) \
+	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3-nightly:latest \
+	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3-nightly:$(TAG) --file $< ./irods
 	touch $@
 
 ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-base.$(TAG)
