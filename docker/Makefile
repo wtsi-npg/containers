@@ -32,13 +32,6 @@ image_names += ub-16.04-irods-clients-4.2.7
 image_names += ub-18.04-irods-clients-4.2.11
 image_names += ub-18.04-irods-clients-4.2.12
 
-image_names += centos-7-base
-image_names += centos-7-conda
-image_names += centos-7-conda-build
-
-image_names += md-bullseye-base
-image_names += md-bullseye-conda
-
 git_url=$(shell git remote get-url origin)
 git_commit=$(shell git log --pretty=format:'%H' -n 1)
 
@@ -48,18 +41,6 @@ remote := $(addsuffix .$(TAG).pushed, $(image_names))
 all: $(images)
 
 push: $(remote)
-
-centos-7-base.$(TAG): base/centos/7/Dockerfile
-	docker build $(DOCKER_ARGS) \
-	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--label org.opencontainers.image.title="Base image, CentOS 7" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/centos-7-base:latest \
-	--tag $(DOCKER_PREFIX)/centos-7-base:$(TAG) --file $< ./base
-	touch $@
 
 ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	docker build $(DOCKER_ARGS) \
@@ -95,54 +76,6 @@ ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
 	--label org.opencontainers.image.created=$(NOW) \
 	--tag $(DOCKER_PREFIX)/ub-22.04-base:latest \
 	--tag $(DOCKER_PREFIX)/ub-22.04-base:$(TAG) --file $< ./base
-	touch $@
-
-md-bullseye-base.$(TAG): base/minideb/bullseye/Dockerfile
-	docker build $(DOCKER_ARGS) \
-	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--label org.opencontainers.image.title="Base image, Debian bullseye" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/md-bullseye-base:latest \
-	--tag $(DOCKER_PREFIX)/md-bullseye-base:$(TAG) --file $< ./base
-	touch $@
-
-centos-7-conda.$(TAG): conda/centos/7/Dockerfile centos-7-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
-	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--label org.opencontainers.image.title="Conda application, CentOS 7" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/centos-7-conda:latest \
-	--tag $(DOCKER_PREFIX)/centos-7-conda:$(TAG) --file $< ./conda
-	touch $@
-
-centos-7-conda-build.$(TAG): conda/centos/7/build/Dockerfile centos-7-conda.$(TAG)
-	docker build $(DOCKER_ARGS) \
-	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--label org.opencontainers.image.title="Conda package building, CentOS 7" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/centos-7-conda-build:latest \
-	--tag $(DOCKER_PREFIX)/centos-7-conda-build:$(TAG) --file $< ./conda
-	touch $@
-
-md-bullseye-conda.$(TAG): conda/minideb/bullseye/Dockerfile md-bullseye-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
-	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--label org.opencontainers.image.title="Conda application, Debian bullseye" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/md-bullseye-conda:latest \
-	--tag $(DOCKER_PREFIX)/md-bullseye-conda:$(TAG) --file $< ./conda
 	touch $@
 
 ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
