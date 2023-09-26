@@ -12,26 +12,10 @@ builds where curl is later dropped.
 A base image with curl and gosu installed, intended for multi-stage
 builds where curl is later dropped.
 
-### base/centos/7 ###
+### base/ubuntu/20.04 ###
 
-A base image with gosu installed.
-
-### base/minideb/bullseye
-
-A base image with gosu installed.
-
-### conda/centos/7 ###
-
-A Conda runtime image with Conda installed.
-
-### conda/centos/7/build ###
-
-A Conda build image with Conda and some of its supporting build
-packages installed, including conda-build and conda-verify.
-
-### conda/minideb/bullseye ###
-
-A Conda runtime image with Conda installed.
+A base image with curl and gosu installed, intended for multi-stage
+builds where curl is later dropped.
 
 ### irods/ubuntu/16.04 ###
 

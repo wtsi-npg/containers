@@ -1,1 +1,0 @@
-An image with Conda installed.
