@@ -3,6 +3,8 @@ FROM $BASE_IMAGE
 
 ARG IRODS_VERSION="4.2.7"
 
+COPY . /opt/docker/irods_clients_dev
+
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \
     apt-get install -q -y --no-install-recommends \
@@ -31,7 +33,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     irods-runtime="${IRODS_VERSION}" \
     irods-icommands="${IRODS_VERSION}"
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys "E1DD270288B4E6030699E45FA1715D88E1DF1F24" && \
+RUN apt-key add - < /opt/docker/irods_clients_dev/keys/git-core-ppa.asc && \
     echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -sc) main" |\
     tee /etc/apt/sources.list.d/git-core.list && \
     apt-get update && \
