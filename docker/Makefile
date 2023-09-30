@@ -45,7 +45,8 @@ all: $(images)
 push: $(remote)
 
 ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--label org.opencontainers.image.title="Base image, Ubuntu 16.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -56,7 +57,8 @@ ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	touch $@
 
 ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--label org.opencontainers.image.title="Base image, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -67,7 +69,8 @@ ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	touch $@
 
 ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--label org.opencontainers.image.title="Base image, Ubuntu 22.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -78,7 +81,8 @@ ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
 	touch $@
 
 ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-16.04-base \
 	--label org.opencontainers.image.title="iRODS 4.2.7 server, Ubuntu 16.04" \
 	--label org.opencontainers.image.source=$(git_url) \
@@ -90,7 +94,8 @@ ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	touch $@
 
 ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-18.04-base \
 	--build-arg IRODS_VERSION=4.2.11 \
 	--label org.opencontainers.image.title="iRODS 4.2.11 server, Ubuntu 18.04" \
@@ -103,7 +108,8 @@ ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	touch $@
 
 ub-18.04-irods-4.2.12.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-18.04-base \
 	--build-arg IRODS_VERSION=4.2.12 \
 	--label org.opencontainers.image.title="iRODS 4.2.12 server, Ubuntu 18.04" \
@@ -116,7 +122,8 @@ ub-18.04-irods-4.2.12.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	touch $@
 
 ub-18.04-irods-4.3.0.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-18.04-base \
 	--build-arg IRODS_VERSION=4.3.0 \
 	--label org.opencontainers.image.title="iRODS 4.3.0 server, Ubuntu 18.04" \
@@ -129,7 +136,8 @@ ub-18.04-irods-4.3.0.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	touch $@
 
 ub-22.04-irods-4.3-nightly.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
-	docker build $(DOCKER_ARGS) \
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
 	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-22.04-base \
 	--build-arg IRODS_VERSION=4.3-nightly \
 	--label org.opencontainers.image.title="iRODS 4.3-nightly server, Ubuntu 22.04" \
