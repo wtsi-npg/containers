@@ -4,7 +4,7 @@ ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE as installer
 
 ARG IRODS_VERSION="4.3-nightly"
-ARG BATON_VERSION="4.1.0"
+ARG BATON_VERSION="4.2.0"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"
 ARG BCFTOOLS_VERSION="1.18"
@@ -49,15 +49,14 @@ RUN apt-get update && \
     autoconf \
     automake \
     build-essential \
-    less \
+    git \
     libtool \
     pkg-config \
     python3-sphinx \
-    ssh \
-    libdeflate-dev \
-    libjansson-dev \
     libbz2-dev \
     libcurl3-dev \
+    libdeflate-dev \
+    libjansson-dev \
     liblzma-dev \
     zlib1g-dev
 
@@ -135,14 +134,12 @@ RUN curl -sSL \
 RUN ls -l && apt-get install -y ./*.deb
 
 RUN apt-get install -q -y --no-install-recommends \
-    gnuplot \
     jq \
-    libdeflate0 \
-    libjansson4 \
     libbz2-1.0 \
     libcurl4 \
+    libdeflate0 \
+    libjansson4 \
     liblzma5 \
-    perl \
     zlib1g \
     unattended-upgrades && \
     unattended-upgrade -v && \
