@@ -80,6 +80,12 @@ jobs:
       - name: "Build and push Docker images"
         run: |
             cd docker
+
+            # Use the default builder because buildx cannot currently build on a base image
+            # that it has just built. See https://github.com/docker/buildx/issues/1453
+            # We still need buildx for its --build-context feature.
+            docker buildx use default
+
             make GITHUB_ACTIONS=${GITHUB_ACTIONS} GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
 
             docker image prune --force

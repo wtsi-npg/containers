@@ -3,7 +3,10 @@
 ARG BASE_IMAGE=ubuntu:16.04
 FROM $BASE_IMAGE as installer
 
+# This default is the latest usable version
 ARG IRODS_VERSION="4.2.7"
+
+# These defaults are the latest usable versions
 ARG BATON_VERSION="4.2.0"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"

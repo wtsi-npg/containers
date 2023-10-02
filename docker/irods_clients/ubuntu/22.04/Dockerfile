@@ -4,6 +4,8 @@ ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE as installer
 
 ARG IRODS_VERSION="4.3-nightly"
+
+# These defaults are the latest usable versions
 ARG BATON_VERSION="4.2.0"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"
