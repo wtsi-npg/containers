@@ -1,8 +1,8 @@
 ARG BASE_IMAGE=ubuntu:18.04
 FROM $BASE_IMAGE
 
-# Other versions available on bionic are 4.3.0
-ARG IRODS_VERSION="4.2.11"
+# This default is is latest usable version
+ARG IRODS_VERSION="4.2.12" 
 
 COPY . /opt/docker/irods_clients_dev
 

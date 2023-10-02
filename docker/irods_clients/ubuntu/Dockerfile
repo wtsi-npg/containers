@@ -3,8 +3,10 @@
 ARG BASE_IMAGE=ubuntu:18.04
 FROM $BASE_IMAGE as installer
 
-# Other iRODS versions available on bionic are 4.3.0
+# This default is the latest usable version
 ARG IRODS_VERSION="4.2.11"
+
+# These defaults are the latest usable versions
 ARG BATON_VERSION="4.2.0"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"
