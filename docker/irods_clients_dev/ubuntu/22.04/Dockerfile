@@ -43,6 +43,7 @@ RUN apt-get update && \
     check \
     cmake \
     gdb \
+    git \
     jq \
     lcov \
     less \
