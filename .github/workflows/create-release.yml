@@ -78,6 +78,8 @@ jobs:
             password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build and push Docker images"
+        env:
+          DOCKER_ARGS: "--platform linux/amd64 --progress=plain --rm --pull --no-cache"
         run: |
             cd docker
 
@@ -86,9 +88,9 @@ jobs:
             # We still need buildx for its --build-context feature.
             docker buildx use default
 
-            make GITHUB_ACTIONS=${GITHUB_ACTIONS} GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
+            make GITHUB_ACTIONS=${GITHUB_ACTIONS} GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }} DOCKER_ARGS=${DOCKER_ARGS}
 
             docker image prune --force
             docker images
 
-            make push GITHUB_ACTIONS=${GITHUB_ACTIONS} GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
+            make push GITHUB_ACTIONS=${GITHUB_ACTIONS} GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }} DOCKER_ARGS=${DOCKER_ARGS}
