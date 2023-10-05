@@ -52,6 +52,17 @@ jobs:
     if: needs.release.outputs.isRelease == 'true'
 
     steps:
+      - name: "Free disk space on the runner"
+        uses: jlumbroso/free-disk-space@f68fdb7  # v1.3.0
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false
+          swap-storage: false
+
       - name: "Checkout code"
         uses: actions/checkout@v3
         with:
