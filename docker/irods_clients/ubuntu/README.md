@@ -20,7 +20,7 @@ The Dockerfile supports these build arguments:
 - DOCKER_IMAGE (no default, must be supplied)
 - DOCKER_TAG (no default, must be supplied)
 - IRODS_VERSION (defaults to "4.2.11")
-- BATON_VERSION (defaults to "4.1.0")
+- BATON_VERSION (defaults to "4.2.1")
 - HTSLIB_VERSION (defaults to "1.18")
 - SAMTOOLS_VERSION (defaults to "1.18")
 - BCFTOOLS_VERSION (defaults to "1.18")

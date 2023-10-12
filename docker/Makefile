@@ -157,7 +157,7 @@ ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile ub-16
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.7 \
-	--build-arg BATON_VERSION=4.2.0 \
+	--build-arg BATON_VERSION=4.2.1 \
 	--build-arg HTSLIB_VERSION=1.18 \
 	--build-arg SAMTOOLS_VERSION=1.18 \
 	--build-arg BCFTOOLS_VERSION=1.18 \
@@ -178,7 +178,7 @@ ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-b
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.11 \
-	--build-arg BATON_VERSION=4.2.0 \
+	--build-arg BATON_VERSION=4.2.1 \
 	--build-arg HTSLIB_VERSION=1.18 \
 	--build-arg SAMTOOLS_VERSION=1.18 \
 	--build-arg BCFTOOLS_VERSION=1.18 \
@@ -200,7 +200,7 @@ ub-18.04-irods-clients-4.2.12.$(TAG): irods_clients/ubuntu/Dockerfile ub-18.04-b
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.12 \
-	--build-arg BATON_VERSION=4.2.0 \
+	--build-arg BATON_VERSION=4.2.1 \
 	--build-arg HTSLIB_VERSION=1.18 \
 	--build-arg SAMTOOLS_VERSION=1.18 \
 	--build-arg BCFTOOLS_VERSION=1.18 \
@@ -222,7 +222,7 @@ ub-22.04-irods-clients-4.3-nightly.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.3-nightly \
-	--build-arg BATON_VERSION=4.2.0 \
+	--build-arg BATON_VERSION=4.2.1 \
 	--build-arg HTSLIB_VERSION=1.18 \
 	--build-arg SAMTOOLS_VERSION=1.18 \
 	--build-arg BCFTOOLS_VERSION=1.18 \
