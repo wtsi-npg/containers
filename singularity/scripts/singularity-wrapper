@@ -174,7 +174,7 @@ if [ ! -e "$MANIFEST_PATH" ] ; then
     exit 4
 fi
 
-operation="$@"
+operation="$1"
 if [ -z "$operation" ] ; then
     usage
     echo -e "\nERROR:\n  An operation argument is required"
