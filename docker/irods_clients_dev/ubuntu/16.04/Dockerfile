@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=ubuntu:16.04
 FROM $BASE_IMAGE
 
-# This default is the latest usable version
+# The latest usable version
 ARG IRODS_VERSION="4.2.7"
 
 COPY . /opt/docker/irods_clients_dev

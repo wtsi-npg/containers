@@ -16,10 +16,10 @@ from source where packages are not available.
 
 The Dockerfile supports these build arguments:
 
-- BASE_IMAGE (defaults to "ubuntu:18.04")
+- BASE_IMAGE (defaults to "ubuntu:22.04")
 - DOCKER_IMAGE (no default, must be supplied)
 - DOCKER_TAG (no default, must be supplied)
-- IRODS_VERSION (defaults to "4.2.11")
+- IRODS_VERSION (defaults to the latest usable iRODS version, currently "4.3.1")
 - BATON_VERSION (defaults to "4.2.1")
 - HTSLIB_VERSION (defaults to "1.18")
 - SAMTOOLS_VERSION (defaults to "1.18")

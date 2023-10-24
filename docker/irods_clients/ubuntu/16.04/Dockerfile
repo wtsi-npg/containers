@@ -1,17 +1,26 @@
 # syntax=docker/dockerfile:1
 
-ARG BASE_IMAGE=ubuntu:16.04
-FROM $BASE_IMAGE as installer
+# Set defaults for all build stages
 
-# This default is the latest usable version
+# The latest usable version
 ARG IRODS_VERSION="4.2.7"
 
-# These defaults are the latest usable versions
+# The latest usable versions
 ARG BATON_VERSION="4.2.1"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"
 ARG BCFTOOLS_VERSION="1.18"
 ARG HTSLIB_PLUGINS_VERSION="201712"
+
+ARG BASE_IMAGE=ubuntu:16.04
+FROM $BASE_IMAGE as installer
+
+ARG IRODS_VERSION
+ARG BATON_VERSION
+ARG HTSLIB_VERSION
+ARG SAMTOOLS_VERSION
+ARG BCFTOOLS_VERSION
+ARG HTSLIB_PLUGINS_VERSION
 
 COPY . /opt/docker/irods_clients
 
@@ -105,7 +114,7 @@ FROM $BASE_IMAGE
 
 ARG DOCKER_IMAGE
 ARG DOCKER_TAG
-ARG IRODS_VERSION="4.2.7"
+ARG IRODS_VERSION
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \

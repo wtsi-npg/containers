@@ -12,7 +12,7 @@ The iRODS server starts with a single user 'irods' configured.
 
 To run the container (with iCAT port binding to the host machine):
 
-`docker run -d --name irods -p 1247:1247 wtsi-npg/ub-18.04-irods-[VERSION]:latest`
+`docker run -d --name irods -p 1247:1247 wtsi-npg/ub-22.04-irods-[VERSION]:latest`
 
 where [VERSION] is the required release e.g. 4.3.0
 

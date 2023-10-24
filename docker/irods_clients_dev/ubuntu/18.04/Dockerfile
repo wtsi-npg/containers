@@ -1,10 +1,10 @@
-ARG BASE_IMAGE=ubuntu:22.04
+ARG BASE_IMAGE=ubuntu:18.04
 FROM $BASE_IMAGE
 
 # The latest usable version
 ARG IRODS_VERSION="4.3.1" 
 # The Debian package revision number
-ARG IRODS_REVISION="0"
+ARG IRODS_REVISION="1"
 
 COPY . /opt/docker/irods_clients_dev
 
@@ -35,6 +35,13 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
     irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)"
 
+RUN apt-key add - < /opt/docker/irods_clients_dev/keys/git-core-ppa.asc && \
+    echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -sc) main" |\
+    tee /etc/apt/sources.list.d/git-core.list && \
+    apt-get update && \
+    apt-get install -q -y --no-install-recommends \
+    git
+
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     autoconf \
@@ -43,7 +50,6 @@ RUN apt-get update && \
     check \
     cmake \
     gdb \
-    git \
     jq \
     lcov \
     less \
