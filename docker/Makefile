@@ -10,7 +10,7 @@ endif
 NOW=$(shell date --utc --iso-8601=seconds)
 
 DOCKER_PREFIX?=$(DOCKER_REGISTRY)/$(DOCKER_USER)
-DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --rm
+DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --pull --rm
 
 .PHONY: clean push
 
