@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Copyright (C) 2023 Genome Research Ltd. All rights reserved.
 #
@@ -17,8 +17,6 @@
 #
 # Author: Keith James <kdj@sanger.ac.uk>
 
-set -euo pipefail
-
 usage() {
     cat 1>&2 << EOF
 Install singularity proxy wrappers for the executables listed in a
@@ -36,7 +34,7 @@ Usage: $0
     [-e]
     [-h]
     [-i <Docker image name>]
-    [-m <JSON manifest path>]
+    [-m <manifest path>]
     [-p <wrapper install prefix>]
     [-r <Docker registry name>]
     [-s]
@@ -73,7 +71,7 @@ EOF
 
 # Print an application manifest
 print_manifest() {
-    jq . "$MANIFEST_PATH"
+    cat "$MANIFEST_PATH"
 }
 
 # Write a bash script wrapping an application in a Docker container
@@ -113,9 +111,9 @@ install_wrappers() {
     install -d "$dir"
     cp "/usr/local/bin/$singularity_wrap_impl" "$PREFIX/bin"
 
-    for exe in "${wrappers[@]}" ; do
+    while IFS= read -r exe; do
         write_wrapper "$dir" "$exe"
-    done
+    done < "$MANIFEST_PATH"
 }
 
 DOCKER_REGISTRY=${DOCKER_REGISTRY:-ghcr.io}
@@ -124,7 +122,7 @@ DOCKER_IMAGE=${DOCKER_IMAGE:-""}
 DOCKER_TAG=${DOCKER_TAG:-latest}
 
 PREFIX=${PREFIX:-/opt/wtsi-npg}
-MANIFEST_PATH=${MANIFEST_PATH:-"$PREFIX/etc/manifest.json"}
+MANIFEST_PATH=${MANIFEST_PATH:-"$PREFIX/etc/manifest.txt"}
 
 singularity_wrap_impl="singularity-run-docker"
 
@@ -171,19 +169,12 @@ done
 
 shift $((OPTIND -1))
 
-declare -a wrappers
 if [ ! -e "$MANIFEST_PATH" ] ; then
     echo -e "\nERROR:\n  The manifest of executables at '$MANIFEST_PATH' does not exist"
     exit 4
 fi
 
-
-
-
-
-wrappers=($(jq -j '.executable[] + " "' "$MANIFEST_PATH"))
-
-operation="$@"
+operation="$1"
 if [ -z "$operation" ] ; then
     usage
     echo -e "\nERROR:\n  An operation argument is required"
