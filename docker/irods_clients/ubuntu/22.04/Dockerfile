@@ -40,9 +40,9 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
 ENV NIGHTLY_URL_BASE=https://github.com/wtsi-npg/irods_development_environment/releases/download/nightly/
 
 RUN curl -sSL \
-    -O ${NIGHTLY_URL_BASE}irods-dev_4.3.0-1.jammy_amd64.deb \
-    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.0-1.jammy_amd64.deb \
-    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.0-1.jammy_amd64.deb
+    -O ${NIGHTLY_URL_BASE}irods-dev_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.1-0.jammy_amd64.deb
 
 RUN ls -l && apt-get install -y ./*.deb
 
@@ -130,8 +130,8 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
 ENV NIGHTLY_URL_BASE=https://github.com/wtsi-npg/irods_development_environment/releases/download/nightly/
 
 RUN curl -sSL \
-    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.0-1.jammy_amd64.deb \
-    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.0-1.jammy_amd64.deb
+    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.1-0.jammy_amd64.deb
 
 RUN ls -l && apt-get install -y ./*.deb
 
