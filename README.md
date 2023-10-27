@@ -58,14 +58,9 @@ e.g. List the programs provided by a container:
 
     $ docker run wsinpg/ub-18.04-irods-clients-4.2.11:latest \
         singularity-wrapper list
-    {
-        "package": "irods-clients",
-        "executable": [
-            "baton-chmod",
-            ...
-            "samtools"
-        ]
-    }
+    baton-chmod
+    ...
+    samtools
 
 e.g. Install wrappers to $PREFIX/bin:
 
