@@ -10,7 +10,7 @@ endif
 NOW=$(shell date --utc --iso-8601=seconds)
 
 DOCKER_PREFIX?=$(DOCKER_REGISTRY)/$(DOCKER_USER)
-DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --pull --rm
+DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --rm
 
 .PHONY: clean push
 
@@ -46,6 +46,7 @@ push: $(remote)
 
 ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
+	--pull \
 	--load \
 	--label org.opencontainers.image.title="Base image, Ubuntu 16.04" \
 	--label org.opencontainers.image.source=$(git_url) \
@@ -58,6 +59,7 @@ ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 
 ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
+	--pull \
 	--load \
 	--label org.opencontainers.image.title="Base image, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
@@ -70,6 +72,7 @@ ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 
 ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
+	--pull \
 	--load \
 	--label org.opencontainers.image.title="Base image, Ubuntu 22.04" \
 	--label org.opencontainers.image.source=$(git_url) \
