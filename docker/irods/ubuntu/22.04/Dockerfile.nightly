@@ -1,10 +1,7 @@
 ARG BASE_IMAGE=ub-22.04-base
 FROM $BASE_IMAGE
 
-# The default is the latest usable version
-ARG IRODS_VERSION="4.3.1"
-# This is the Debian package revision number
-ARG IRODS_REVISION="0"
+ARG IRODS_VERSION="nightly"
 
 WORKDIR /opt/docker/irods
 
@@ -35,22 +32,22 @@ ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
     LC_ALL=en_GB.UTF-8
 
+# Required to get the externals packages
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt $(lsb_release -sc) main" | \
     tee /etc/apt/sources.list.d/renci-irods.list && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends \
-    irods-server="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-database-plugin-postgres="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-dev="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" && \
-    apt-get install -q -y -f && \
-    unattended-upgrade -v && \
-    apt-get remove -q -y unattended-upgrades && \
-    apt-get autoremove -q -y && \
-    apt-get clean -q -y && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get update
+
+ENV NIGHTLY_URL_BASE=https://github.com/wtsi-npg/irods_development_environment/releases/download/nightly/
+
+RUN curl -sSL \
+    -O ${NIGHTLY_URL_BASE}irods-database-plugin-postgres_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-dev_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-server_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.1-0.jammy_amd64.deb
+
+RUN ls -l && apt-get update && apt-get install -y ./*.deb
 
 RUN /opt/docker/irods/scripts/create_database.sh && \
     /opt/docker/irods/scripts/configure_irods.sh

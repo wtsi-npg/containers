@@ -1,7 +1,10 @@
 ARG BASE_IMAGE=ub-18.04-base
 FROM $BASE_IMAGE
 
-ARG IRODS_VERSION="4.3.0"
+# The default is the latest usable version
+ARG IRODS_VERSION="4.3.1"
+# This is the Debian package revision number
+ARG IRODS_REVISION="1"
 
 WORKDIR /opt/docker/irods
 
@@ -37,11 +40,11 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     tee /etc/apt/sources.list.d/renci-irods.list && \
     apt-get update && \
     apt-get install -q -y --no-install-recommends \
-    irods-server="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-runtime="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-database-plugin-postgres="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-dev="${IRODS_VERSION}-1~$(lsb_release -sc)" && \
+    irods-server="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    irods-database-plugin-postgres="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    irods-dev="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" && \
     apt-get install -q -y -f && \
     unattended-upgrade -v && \
     apt-get remove -q -y unattended-upgrades && \

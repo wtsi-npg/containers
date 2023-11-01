@@ -1,6 +1,7 @@
 ARG BASE_IMAGE=16.04-base
 FROM $BASE_IMAGE
 
+# This default is the latest usable version
 ARG IRODS_VERSION="4.2.7"
 
 WORKDIR /opt/docker/irods

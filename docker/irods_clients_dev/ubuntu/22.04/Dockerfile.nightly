@@ -1,10 +1,7 @@
-ARG BASE_IMAGE=ubuntu:18.04
+ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE
 
-# This default is is latest usable version
-ARG IRODS_VERSION="4.2.12" 
-
-COPY . /opt/docker/irods_clients_dev
+ARG IRODS_VERSION="4.3-nightly"
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \
@@ -27,18 +24,16 @@ ENV LANG=en_GB.UTF-8 \
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
     tee /etc/apt/sources.list.d/renci-irods.list && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends \
-    irods-dev="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-runtime="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)"
+    apt-get update
 
-RUN apt-key add - < /opt/docker/irods_clients_dev/keys/git-core-ppa.asc && \
-    echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -sc) main" |\
-    tee /etc/apt/sources.list.d/git-core.list && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends \
-    git
+ENV NIGHTLY_URL_BASE=https://github.com/wtsi-npg/irods_development_environment/releases/download/nightly/
+
+RUN curl -sSL \
+    -O ${NIGHTLY_URL_BASE}irods-dev_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.1-0.jammy_amd64.deb
+
+RUN ls -l && apt-get update && apt-get install -y ./*.deb
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
@@ -48,6 +43,7 @@ RUN apt-get update && \
     check \
     cmake \
     gdb \
+    git \
     jq \
     lcov \
     less \

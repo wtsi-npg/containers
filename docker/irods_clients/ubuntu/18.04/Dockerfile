@@ -1,17 +1,29 @@
 # syntax=docker/dockerfile:1
 
-ARG BASE_IMAGE=ubuntu:18.04
-FROM $BASE_IMAGE as installer
+# Set defaults for all build stages
 
-# This default is the latest usable version
-ARG IRODS_VERSION="4.2.11"
+# The latest usable version
+ARG IRODS_VERSION="4.3.1"
+# The Debian package revision number
+ARG IRODS_REVISION="1"
 
-# These defaults are the latest usable versions
+# The latest usable versions
 ARG BATON_VERSION="4.2.1"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"
 ARG BCFTOOLS_VERSION="1.18"
 ARG HTSLIB_PLUGINS_VERSION="201712"
+
+ARG BASE_IMAGE=ubuntu:18.04
+FROM $BASE_IMAGE as installer
+
+ARG IRODS_VERSION
+ARG IRODS_REVISION
+ARG BATON_VERSION
+ARG HTSLIB_VERSION
+ARG SAMTOOLS_VERSION
+ARG BCFTOOLS_VERSION
+ARG HTSLIB_PLUGINS_VERSION
 
 COPY . /opt/docker/irods_clients
 
@@ -38,9 +50,9 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     tee /etc/apt/sources.list.d/renci-irods.list && \
     apt-get update && \
     apt-get install -q -y --no-install-recommends \
-    irods-dev="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-runtime="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)"
+    irods-dev="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)"
 
 RUN apt-key add - < /opt/docker/irods_clients/keys/git-core-ppa.asc && \
     echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -sc) main" |\
@@ -104,7 +116,8 @@ FROM $BASE_IMAGE
 
 ARG DOCKER_IMAGE
 ARG DOCKER_TAG
-ARG IRODS_VERSION="4.2.11"
+ARG IRODS_VERSION
+ARG IRODS_REVISION
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \
@@ -129,8 +142,8 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     tee /etc/apt/sources.list.d/renci-irods.list && \
     apt-get update && \ 
     apt-get install -q -y --no-install-recommends \
-    irods-icommands="${IRODS_VERSION}-1~$(lsb_release -sc)" \
-    irods-runtime="${IRODS_VERSION}-1~$(lsb_release -sc)" \
+    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
     jq \
     libbz2-1.0 \
     libcurl3 \

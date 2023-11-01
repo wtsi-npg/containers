@@ -2,12 +2,9 @@
 
 # Set defaults for all build stages
 
-# The latest usable version
-ARG IRODS_VERSION="4.3.1"
-# The Debian package revision number
-ARG IRODS_REVISION="0"
+ARG IRODS_VERSION="4.3-nightly"
 
-# These defaults are the latest usable versions
+# The latest usable versions
 ARG BATON_VERSION="4.2.1"
 ARG HTSLIB_VERSION="1.18"
 ARG SAMTOOLS_VERSION="1.18"
@@ -17,9 +14,7 @@ ARG HTSLIB_PLUGINS_VERSION="201712"
 ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE as installer
 
-# Use defaults
 ARG IRODS_VERSION
-ARG IRODS_REVISION
 ARG BATON_VERSION
 ARG HTSLIB_VERSION
 ARG SAMTOOLS_VERSION
@@ -49,11 +44,16 @@ ENV LANG=en_GB.UTF-8 \
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
     tee /etc/apt/sources.list.d/renci-irods.list && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends \
-    irods-dev="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)"
+    apt-get update
+
+ENV NIGHTLY_URL_BASE=https://github.com/wtsi-npg/irods_development_environment/releases/download/nightly/
+
+RUN curl -sSL \
+    -O ${NIGHTLY_URL_BASE}irods-dev_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.1-0.jammy_amd64.deb
+
+RUN ls -l && apt-get update && apt-get install -y ./*.deb
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
@@ -66,6 +66,7 @@ RUN apt-get update && \
     python3-sphinx \
     libbz2-dev \
     libcurl3-dev \
+    libdeflate-dev \
     libjansson-dev \
     liblzma-dev \
     zlib1g-dev
@@ -111,7 +112,6 @@ FROM $BASE_IMAGE
 ARG DOCKER_IMAGE
 ARG DOCKER_TAG
 ARG IRODS_VERSION
-ARG IRODS_REVISION
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
     apt-get update && \
@@ -134,10 +134,17 @@ ENV LANG=en_GB.UTF-8 \
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
     tee /etc/apt/sources.list.d/renci-irods.list && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends \
-    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
+    apt-get update
+    
+ENV NIGHTLY_URL_BASE=https://github.com/wtsi-npg/irods_development_environment/releases/download/nightly/
+
+RUN curl -sSL \
+    -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.1-0.jammy_amd64.deb \
+    -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.1-0.jammy_amd64.deb
+
+RUN ls -l && apt-get update && apt-get install -y ./*.deb
+
+RUN apt-get install -q -y --no-install-recommends \
     jq \
     libbz2-1.0 \
     libcurl4 \

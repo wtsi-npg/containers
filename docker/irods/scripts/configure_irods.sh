@@ -19,9 +19,14 @@ case "$IRODS_VERSION" in
         patch /var/lib/irods/scripts/irods/lib.py /opt/docker/irods/patches/patch_lib.diff
         python /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/setup_irods.py.in
         ;;
-    4.3.*)
+    4.3.0)
         patch /var/lib/irods/scripts/irods/controller.py /opt/docker/irods/patches/patch_controller.diff
-        sudo python3 /var/lib/irods/scripts/setup_rsyslog_and_logrotate.py # automatic setup for these has been removed
+        sudo python3 /var/lib/irods/scripts/setup_rsyslog_and_logrotate.py # Automatic setup for these has been removed.
+        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
+        ;;
+    4.3.1)
+        patch /var/lib/irods/scripts/irods/controller.py /opt/docker/irods/patches/patch_controller.diff
+        # Logging has been changed to use rsyslog. A potential enhancement is to configure that here.
         python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
         ;;
     *)
