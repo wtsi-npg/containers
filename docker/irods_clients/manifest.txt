@@ -60,4 +60,5 @@ iunreg
 iuserinfo
 ixmsg
 izonereport
+plot-ampliconstats
 samtools
