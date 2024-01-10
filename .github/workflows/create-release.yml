@@ -103,3 +103,25 @@ jobs:
             docker images
 
             make push GITHUB_ACTIONS=${GITHUB_ACTIONS} GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
+
+  bundle:
+    runs-on: ubuntu-latest
+    container: "ghcr.io/wtsi-npg/ub-16.04-irods-clients-4.2.7:latest"
+
+    needs: deploy
+
+    steps:
+    - name: install exodus
+      run: |
+        apt-get update
+        apt-get install -q -y python3-pip
+        pip3 install exodus-bundler
+
+    - name: bundle clients
+      run: exodus --tarball --add /usr/lib/irods/plugins/ --output client_bundle.tgz /usr/local/bin/baton-* /usr/bin/ils /usr/bin/iinit /usr/bin/imeta
+
+    - name: upload bundle
+      uses: actions/upload-artifact@v3
+      with:
+        name: client_bundle
+        path: "client_bundle.tgz"
