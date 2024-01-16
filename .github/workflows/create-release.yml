@@ -118,7 +118,8 @@ jobs:
         pip3 install exodus-bundler
 
     - name: bundle clients
-      run: exodus --tarball --add /usr/lib/irods/plugins/ --output client_bundle.tgz /usr/local/bin/baton-* /usr/bin/ils /usr/bin/iinit /usr/bin/imeta
+
+      run: exodus --tarball --add /usr/lib/irods/plugins/ --add /lib/x86_64-linux-gnu/ --output client_bundle.tgz /usr/local/bin/baton-* /usr/bin/ils /usr/bin/iinit /usr/bin/imeta
 
     - name: upload bundle
       uses: actions/upload-artifact@v3
