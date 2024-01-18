@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+env:
+  BUNDLE_NAME: bundle-ub-16.04-irods-clients-4.2.7.tgz
+
 jobs:
 
   release_variables:
@@ -90,21 +93,21 @@ jobs:
     if: always()
 
     steps:
-    - name: install exodus
+    - name: "Install exodus"
       run: |
         apt-get update
         apt-get install -q -y python3-pip
         pip3 install exodus-bundler
 
-    - name: bundle clients
+    - name: "Bundle clients"
 
-      run: exodus --tarball --add /usr/lib/irods/plugins/ --add /lib/x86_64-linux-gnu/ --output client_bundle.tgz /usr/local/bin/baton-* /usr/bin/ils /usr/bin/iinit /usr/bin/imeta
+      run: exodus --tarball --add /usr/lib/irods/plugins/ --add /lib/x86_64-linux-gnu/ --output $BUNDLE_NAME /usr/local/bin/baton-* /usr/bin/ils /usr/bin/iinit /usr/bin/imeta
 
-    - name: upload bundle
+    - name: "Upload bundle"
       uses: actions/upload-artifact@v3
       with:
         name: client_bundle
-        path: "client_bundle.tgz"
+        path: $BUNDLE_NAME
 
   release:
     runs-on: ubuntu-latest
@@ -141,7 +144,7 @@ jobs:
         with:
           name: ${{ env.RELEASE_VERSION }}
           prerelease: ${{ !(github.sha == env.MASTER_SHA) }}
-          artifacts: "client_bundle.tgz"
+          artifacts: BUNDLE_NAME
           removeArtifacts: true
           artifactErrorsFailBuild: true
           generateReleaseNotes: true
