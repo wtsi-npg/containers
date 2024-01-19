@@ -38,6 +38,7 @@ jobs:
 
     outputs:
       isRelease: ${{ github.sha == env.MASTER_SHA }}
+      preRelease: ${{ !(github.sha == env.MASTER_SHA) }}
       releaseVersion: ${{ env.RELEASE_VERSION }}
 
   deploy:
@@ -156,4 +157,4 @@ jobs:
           generateReleaseNotes: true
         env:
           NAME: ${{ needs.release_variables.outputs.releaseVersion }}
-          PRERELEASE: ${{ !needs.release_variables.outputs.isRelease }}
+          PRERELEASE: ${{ needs.release_variables.outputs.preRelease }}
