@@ -73,6 +73,22 @@ e.g. Install wrappers to $PREFIX/bin:
     ...
     -rwxr-xr-x 1 kdj staff 409 Apr 12 15:47 samtools
 
+# iRODS Client Bundle
+
+The release contains irods 4.2.7 clients bundled from
+`ub-16.04-irods-clients-4.2.7` to be used on ONT machines, where we
+cannot run containers.  Given the complexity of the iRODS clients'
+dependency chain, the location of the plugins must be provided in the
+iRODS environment file using the `irods_plugins_home` key. Some
+dependencies for these plugins must also be preloaded to avoid local
+system libraries from being pulled in, e.g.:
+
+    $ LD_PRELOAD=path/libarchive.so.16:path/libcrypto.so.1.0.0:path/libssl.so.1.0.0:path/libxml2.so.2:path/libicuuc.so.55:path/libicudata.so.55 \
+        ./exodus/bin/iinit
+
+A script to do this is set up by the ansible used to set up the instruments
+(https://gitlab.internal.sanger.ac.uk/npg/oxford_nanopore_instruments).
+
 
 ## Author
 
