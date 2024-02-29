@@ -147,7 +147,7 @@ jobs:
           name: client_bundle
 
       - name: "Create Release"
-        uses: ncipollo/release-action@v1.12.0
+        uses: ncipollo/release-action@v1.14.0
         with:
           name: ${{ env.NAME }}
           prerelease: ${{ env.PRERELEASE }}
