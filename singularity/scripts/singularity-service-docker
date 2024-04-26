@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Running this script will start an instance of the container, if one is not 
+# Running this script will start an instance of the container, if one is not
 # already running, and then execute the command in the instance.
 #
 # Cleaning up unwanted instances afterwards is outside the scope of this script.
@@ -11,12 +11,45 @@ DOCKER_USER=${DOCKER_USER:?required, but not set}
 DOCKER_IMAGE=${DOCKER_IMAGE:?required, but was not set}
 DOCKER_TAG=${DOCKER_TAG:?required, but not set}
 
+DOCKER_URL="docker://$DOCKER_REGISTRY/$DOCKER_USER/$DOCKER_IMAGE:$DOCKER_TAG"
+
 # Colons and slashes are not allowed in Singularity instance names
 instance="$DOCKER_REGISTRY--$DOCKER_USER--$DOCKER_IMAGE--$DOCKER_TAG"
 
-if ! singularity instance list | grep "$instance" 2>&1 | logger -p user.notice -t singularity-service-docker ; then
-    singularity instance start \
-        "docker://$DOCKER_REGISTRY/$DOCKER_USER/$DOCKER_IMAGE:$DOCKER_TAG" "$instance" 2>&1 | logger -p user.notice -t singularity-service-docker
+# Requires bash >=4.1 for file descriptor management with "{<variable>}"
+LOCK_FILE="/var/lock/$instance--$USER.lock"
+LOCK_TIMEOUT=60
+
+# Get the first free file descriptor
+exec {FD}>"$LOCK_FILE"
+
+# Release the lock and close the file descriptor
+clean_up() {
+    flock --unlock $FD || {
+        echo >&2 "Failed to release lock on $LOCK_FILE (fd: $FD): $?"
+    }
+    exec {FD}>&-
+}
+
+clean_up_and_exit() {
+    clean_up
+    exit 1
+}
+
+# clean_up_and_exit on these signals
+trap clean_up_and_exit SIGINT SIGTERM SIGUSR1 SIGUSR2
+
+flock --exclusive --timeout $LOCK_TIMEOUT $FD || {
+    echo >&2 "Failed to obtain lock on $LOCK_FILE (fd: $FD): $?"
+    exit 1
+}
+
+if ! singularity instance list 2> >(logger -s -p user.err -t singularity-service-docker) |\
+        grep "$instance" 2>&1 >/dev/null
+then
+    singularity --silent instance start "$DOCKER_URL" "$instance" 2> >(logger -s -p user.err -t singularity-service-docker) >/dev/null
 fi
+
+clean_up
 
 singularity exec "instance://$instance" "$@"
