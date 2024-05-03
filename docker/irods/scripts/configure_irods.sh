@@ -29,6 +29,10 @@ case "$IRODS_VERSION" in
         # Logging has been changed to use rsyslog. A potential enhancement is to configure that here.
         python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
         ;;
+    4.3.2)
+        # Logging has been changed to use rsyslog. A potential enhancement is to configure that here.
+        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
+        ;;
     *)
         echo Unknown iRODS version "$IRODS_VERSION"
         exit 1
