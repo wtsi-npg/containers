@@ -123,7 +123,7 @@ jobs:
       run: exodus --tarball --add /usr/lib/irods/plugins/ --add /lib/x86_64-linux-gnu/ --output $BUNDLE_NAME /usr/local/bin/baton-* /usr/bin/ils /usr/bin/iinit /usr/bin/imeta
 
     - name: "Upload bundle"
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: client_bundle
         path: ${{ env.BUNDLE_NAME }}
