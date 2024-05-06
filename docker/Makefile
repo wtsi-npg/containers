@@ -29,12 +29,14 @@ image_names += ub-18.04-irods-clients-dev-4.2.11
 image_names += ub-18.04-irods-clients-dev-4.2.12
 image_names += ub-18.04-irods-clients-dev-4.3.0
 image_names += ub-22.04-irods-clients-dev-4.3.1
+image_names += ub-22.04-irods-clients-dev-4.3.2
 # image_names += ub-22.04-irods-clients-dev-4.3-nightly
 
 image_names += ub-16.04-irods-clients-4.2.7
 image_names += ub-18.04-irods-clients-4.2.11
 image_names += ub-18.04-irods-clients-4.2.12
 image_names += ub-22.04-irods-clients-4.3.1
+image_names += ub-22.04-irods-clients-4.3.2
 # image_names += ub-22.04-irods-clients-4.3-nightly
 
 git_url=$(shell git remote get-url origin)
