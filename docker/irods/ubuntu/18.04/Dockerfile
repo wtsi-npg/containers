@@ -43,8 +43,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     irods-server="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
     irods-runtime="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
     irods-database-plugin-postgres="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" \
-    irods-dev="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" && \
+    irods-icommands="${IRODS_VERSION}-${IRODS_REVISION}~$(lsb_release -sc)" && \
     apt-get install -q -y -f && \
     unattended-upgrade -v && \
     apt-get remove -q -y unattended-upgrades && \
