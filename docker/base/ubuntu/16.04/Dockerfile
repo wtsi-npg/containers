@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 as installer
+FROM ubuntu:xenial-20201014 as installer
 
 ENV GOSU_VERSION=1.16
 
@@ -16,7 +16,7 @@ RUN apt-get update && \
 RUN GOSU_VERSION=$GOSU_VERSION /opt/docker/base/scripts/install_gosu.sh && \
     chmod +x /opt/docker/base/scripts/docker-entrypoint.sh
 
-FROM ubuntu:16.04
+FROM ubuntu:xenial-20201014
 
 RUN apt-get update && \
     apt-get install -q -y \
