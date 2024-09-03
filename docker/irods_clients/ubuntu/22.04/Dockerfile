@@ -15,7 +15,7 @@ ARG BCFTOOLS_VERSION="1.18"
 ARG HTSLIB_PLUGINS_VERSION="201712"
 
 ARG BASE_IMAGE=ubuntu:22.04
-FROM $BASE_IMAGE as installer
+FROM $BASE_IMAGE AS installer
 
 # Use defaults
 ARG IRODS_VERSION
@@ -26,10 +26,11 @@ ARG SAMTOOLS_VERSION
 ARG BCFTOOLS_VERSION
 ARG HTSLIB_PLUGINS_VERSION
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 COPY . /opt/docker/irods_clients
 
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-utils \
     ca-certificates \
@@ -44,7 +45,8 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
-    LC_ALL=en_GB.UTF-8
+    LC_ALL=en_GB.UTF-8 \
+    TZ=/Etc/UTC
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
@@ -71,20 +73,21 @@ RUN apt-get update && \
     zlib1g-dev
 
 ENV CPPFLAGS="-I/usr/include/irods"
+ENV CPU_COUNT=4
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/wtsi-npg/baton/releases/download/${BATON_VERSION}/baton-${BATON_VERSION}.tar.gz" && \
     tar xfz baton-${BATON_VERSION}.tar.gz && \
     cd baton-${BATON_VERSION} && \
     ./configure && \
-    make install
+    make -j ${CPU_COUNT} install
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2" && \
     tar xfj htslib-${HTSLIB_VERSION}.tar.bz2 && \
     cd htslib-${HTSLIB_VERSION} && \
     ./configure --enable-plugins --without-curses && \
-    make install && \
+    make -j ${CPU_COUNT} install && \
     ldconfig
 
 RUN cd /tmp && \
@@ -92,19 +95,19 @@ RUN cd /tmp && \
     tar xfj samtools-${SAMTOOLS_VERSION}.tar.bz2 && \
     cd samtools-${SAMTOOLS_VERSION} && \
     ./configure --with-htslib=system --without-curses && \
-    make install
+    make -j ${CPU_COUNT} install
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2" && \
     tar xfj bcftools-${BCFTOOLS_VERSION}.tar.bz2 && \
     cd bcftools-${BCFTOOLS_VERSION} && \
     ./configure --with-htslib=system --without-curses && \
-    make install
+    make -j ${CPU_COUNT} install
 
 RUN cd /tmp && \
     git clone --depth 1 --branch ${HTSLIB_PLUGINS_VERSION} "https://github.com/samtools/htslib-plugins.git" && \
     cd htslib-plugins && \
-    make install
+    make -j ${CPU_COUNT} install
 
 FROM $BASE_IMAGE 
 
@@ -113,8 +116,9 @@ ARG DOCKER_TAG
 ARG IRODS_VERSION
 ARG IRODS_REVISION
 
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
-    apt-get update && \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-utils \
     ca-certificates \

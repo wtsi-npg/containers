@@ -4,14 +4,15 @@ FROM $BASE_IMAGE
 # This default is the latest usable version
 ARG IRODS_VERSION="4.2.7"
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 WORKDIR /opt/docker/irods
 
 COPY ./scripts/*.sh ./scripts/
 COPY ./config/* ./config/
 COPY ./patches/* ./patches/
 
-RUN echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-transport-https \
     ca-certificates \
@@ -29,7 +30,8 @@ RUN echo "debconf debconf/frontend select Noninteractive" | debconf-set-selectio
 
 ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
-    LC_ALL=en_GB.UTF-8
+    LC_ALL=en_GB.UTF-8 \
+    TZ=/Etc/UTC
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt $(lsb_release -sc) main" | \
