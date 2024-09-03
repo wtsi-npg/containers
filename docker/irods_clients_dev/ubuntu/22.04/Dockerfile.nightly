@@ -3,8 +3,9 @@ FROM $BASE_IMAGE
 
 ARG IRODS_VERSION="4.3-nightly"
 
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
-    apt-get update && \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-utils \
     ca-certificates \
@@ -19,7 +20,8 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
-    LC_ALL=en_GB.UTF-8
+    LC_ALL=en_GB.UTF-8 \
+    TZ=/Etc/UTC
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
@@ -33,7 +35,7 @@ RUN curl -sSL \
     -O ${NIGHTLY_URL_BASE}irods-runtime_4.3.1-0.jammy_amd64.deb \
     -O ${NIGHTLY_URL_BASE}irods-icommands_4.3.1-0.jammy_amd64.deb
 
-RUN ls -l && apt-get update && apt-get install -y ./*.deb
+RUN ls -l && apt-get update && apt-get install -y ./*.deb && rm ./*.deb
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \

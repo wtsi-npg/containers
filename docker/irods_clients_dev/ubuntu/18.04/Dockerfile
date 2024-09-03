@@ -6,10 +6,11 @@ ARG IRODS_VERSION="4.3.1"
 # The Debian package revision number
 ARG IRODS_REVISION="1"
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 COPY . /opt/docker/irods_clients_dev
 
-RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-utils \
     ca-certificates \
@@ -24,7 +25,8 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
-    LC_ALL=en_GB.UTF-8
+    LC_ALL=en_GB.UTF-8 \
+    TZ=/Etc/UTC
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
@@ -37,10 +39,7 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
 
 RUN apt-key add - < /opt/docker/irods_clients_dev/keys/git-core-ppa.asc && \
     echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -sc) main" |\
-    tee /etc/apt/sources.list.d/git-core.list && \
-    apt-get update && \
-    apt-get install -q -y --no-install-recommends \
-    git
+    tee /etc/apt/sources.list.d/git-core.list
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
@@ -50,6 +49,7 @@ RUN apt-get update && \
     check \
     cmake \
     gdb \
+    git \
     jq \
     lcov \
     less \
