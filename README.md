@@ -30,6 +30,14 @@ out of the box. To be used for running tests only.
 The server version may be chosen by passing the Docker build argument
 `--build-arg IRODS_VERSION=<version>` (default is 4.3.0).
 
+### irods/ubuntu/22.04 ###
+
+This is a Docker image of a vanilla iRODS >=4.3.1 server that works
+out of the box. To be used for running tests only.
+
+The server version may be chosen by passing the Docker build argument
+`--build-arg IRODS_VERSION=<version>` (default is 4.3.1).
+
 ## Build instructions ##
 
 A makefile is supplied that will by default build all images and add
