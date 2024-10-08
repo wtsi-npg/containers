@@ -43,6 +43,8 @@ image_names += ub-22.04-irods-clients-4.3.2
 image_names += ub-22.04-irods-clients-4.3.3
 # image_names += ub-22.04-irods-clients-4.3-nightly
 
+image_names += python-3.10-npg-porch
+
 git_url=$(shell git remote get-url origin)
 git_commit=$(shell git log --pretty=format:'%H' -n 1)
 
@@ -63,8 +65,8 @@ ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-16.04-base:latest \
-	--tag $(DOCKER_PREFIX)/ub-16.04-base:$(TAG) --file $< ./base
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./base
 	touch $@
 
 ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
@@ -77,8 +79,8 @@ ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-18.04-base:latest \
-	--tag $(DOCKER_PREFIX)/ub-18.04-base:$(TAG) --file $< ./base
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./base
 	touch $@
 
 ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
@@ -91,8 +93,8 @@ ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-base:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-base:$(TAG) --file $< ./base
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./base
 	touch $@
 
 ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
@@ -105,8 +107,8 @@ ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-16.04-irods-4.2.7:latest \
-	--tag $(DOCKER_PREFIX)/ub-16.04-irods-4.2.7:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
 ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
@@ -120,8 +122,8 @@ ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.2.11:latest \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.2.11:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
 ub-18.04-irods-4.2.12.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
@@ -135,8 +137,8 @@ ub-18.04-irods-4.2.12.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.2.12:latest \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-4.2.12:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
 ub-22.04-irods-4.3.1.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
@@ -150,8 +152,8 @@ ub-22.04-irods-4.3.1.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3.1:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3.1:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
 ub-22.04-irods-4.3.2.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
@@ -165,8 +167,8 @@ ub-22.04-irods-4.3.2.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3.2:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3.2:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
 ub-22.04-irods-4.3.3.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
@@ -179,8 +181,8 @@ ub-22.04-irods-4.3.3.$(TAG): irods/ubuntu/22.04/Dockerfile ub-22.04-base.$(TAG)
 	--label org.opencontainers.image.revision=$(git_commit) \
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3.3:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3.3:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
 ub-22.04-irods-4.3-nightly.$(TAG): irods/ubuntu/22.04/Dockerfile.nightly ub-22.04-base.$(TAG)
@@ -194,8 +196,8 @@ ub-22.04-irods-4.3-nightly.$(TAG): irods/ubuntu/22.04/Dockerfile.nightly ub-22.0
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3-nightly:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-4.3-nightly:$(TAG) --file $< ./irods
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
 ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
@@ -216,8 +218,8 @@ ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile ub-16
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-16.04-irods-clients-4.2.7:latest \
-	--tag $(DOCKER_PREFIX)/ub-16.04-irods-clients-4.2.7:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
@@ -238,8 +240,8 @@ ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/18.04/Dockerfile ub-1
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-4.2.11:latest \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-4.2.11:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-18.04-irods-clients-4.2.12.$(TAG): irods_clients/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
@@ -261,8 +263,8 @@ ub-18.04-irods-clients-4.2.12.$(TAG): irods_clients/ubuntu/18.04/Dockerfile ub-1
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-4.2.12:latest \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-4.2.12:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-22.04-irods-clients-4.3.1.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
@@ -284,8 +286,8 @@ ub-22.04-irods-clients-4.3.1.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3.1:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3.1:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-22.04-irods-clients-4.3.2.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
@@ -307,8 +309,8 @@ ub-22.04-irods-clients-4.3.2.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3.2:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3.2:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-22.04-irods-clients-4.3.3.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
@@ -329,8 +331,8 @@ ub-22.04-irods-clients-4.3.3.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--label org.opencontainers.image.revision=$(git_commit) \
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3.3:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3.3:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-22.04-irods-clients-4.3-nightly.$(TAG): irods_clients/ubuntu/22.04/Dockerfile.nightly
@@ -352,8 +354,8 @@ ub-22.04-irods-clients-4.3-nightly.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3-nightly:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-4.3-nightly:$(TAG) --file $< ./irods_clients
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
 ub-16.04-irods-clients-dev-4.2.7.$(TAG): irods_clients_dev/ubuntu/16.04/Dockerfile
@@ -370,8 +372,8 @@ ub-16.04-irods-clients-dev-4.2.7.$(TAG): irods_clients_dev/ubuntu/16.04/Dockerfi
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-16.04-irods-clients-dev-4.2.7:latest \
-	--tag $(DOCKER_PREFIX)/ub-16.04-irods-clients-dev-4.2.7:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/18.04/Dockerfile
@@ -388,8 +390,8 @@ ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/18.04/Dockerf
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:latest \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.2.11:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-18.04-irods-clients-dev-4.2.12.$(TAG): irods_clients_dev/ubuntu/18.04/Dockerfile
@@ -406,8 +408,8 @@ ub-18.04-irods-clients-dev-4.2.12.$(TAG): irods_clients_dev/ubuntu/18.04/Dockerf
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.2.12:latest \
-	--tag $(DOCKER_PREFIX)/ub-18.04-irods-clients-dev-4.2.12:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-22.04-irods-clients-dev-4.3.1.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfile
@@ -425,8 +427,8 @@ ub-22.04-irods-clients-dev-4.3.1.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfi
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3.1:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3.1:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-22.04-irods-clients-dev-4.3.2.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfile
@@ -444,8 +446,8 @@ ub-22.04-irods-clients-dev-4.3.2.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfi
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3.2:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3.2:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-22.04-irods-clients-dev-4.3.3.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfile
@@ -462,8 +464,8 @@ ub-22.04-irods-clients-dev-4.3.3.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfi
 	--label org.opencontainers.image.revision=$(git_commit) \
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3.3:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3.3:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
 ub-22.04-irods-clients-dev-4.3-nightly.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfile.nightly
@@ -481,8 +483,26 @@ ub-22.04-irods-clients-dev-4.3-nightly.$(TAG): irods_clients_dev/ubuntu/22.04/Do
 	--label org.opencontainers.image.version=$(TAG) \
 	--label org.opencontainers.image.created=$(NOW) \
 	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3-nightly:latest \
-	--tag $(DOCKER_PREFIX)/ub-22.04-irods-clients-dev-4.3-nightly:$(TAG) --file $< ./irods_clients_dev
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
+	touch $@
+
+python-3.10-npg-porch-2.0.0.$(TAG): porch/Dockerfile
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
+	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
+	--build-arg BASE_IMAGE=python:3.10-slim \
+	--build-arg PORCH_VERSION=2.0.0 \
+	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
+	--build-arg DOCKER_TAG=$(TAG) \
+	--label org.opencontainers.image.title="NPG Porch server, Python 3.10" \
+	--label org.opencontainers.image.source=$(git_url) \
+	--label org.opencontainers.image.revision=$(git_commit) \
+	--label org.opencontainers.image.version=$(TAG) \
+	--label org.opencontainers.image.created=$(NOW) \
+	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./porch
 	touch $@
 
 %.$(TAG).pushed: %.$(TAG)
