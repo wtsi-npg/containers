@@ -14,7 +14,7 @@ RUN apt-get update && \
     unattended-upgrade -d -v
 
 RUN GOSU_VERSION=$GOSU_VERSION /opt/docker/base/scripts/install_gosu.sh && \
-    chmod +x /opt/docker/base/scripts/docker-entrypoint.sh
+    chmod +x /opt/docker/base/scripts/entrypoint.sh
 
 FROM ubuntu:16.04
 
@@ -29,7 +29,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=installer /usr/local/bin/gosu /usr/local/bin/gosu
-COPY --from=installer /opt/docker/base/scripts/docker-entrypoint.sh \
-    /opt/docker/base/scripts/docker-entrypoint.sh
+COPY --from=installer /opt/docker/base/scripts/entrypoint.sh \
+    /opt/docker/base/scripts/entrypoint.sh
 
-ENTRYPOINT ["/opt/docker/base/scripts/docker-entrypoint.sh"]
+ENTRYPOINT ["/opt/docker/base/scripts/entrypoint.sh"]
