@@ -1,9 +1,6 @@
 ARG BASE_IMAGE=ubuntu:16.04
 FROM $BASE_IMAGE
 
-# The latest usable version
-ARG IRODS_VERSION="4.2.7"
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 COPY . /opt/docker/irods_clients_dev
@@ -26,6 +23,9 @@ ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
     LC_ALL=en_GB.UTF-8 \
     TZ=/Etc/UTC
+
+# The latest usable version
+ARG IRODS_VERSION="4.2.7"
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\

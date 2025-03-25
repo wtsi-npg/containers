@@ -26,21 +26,9 @@ The Dockerfile supports these build arguments:
 - BCFTOOLS_VERSION (defaults to "1.18")
 - HTSLIB_PLUGINS_VERSION (defaults to "201712")
 
-### As a shell for interacting with iRODS
-
-The entrypoint for this image creates a local user `irodsuser` with a
-`UID` of `1001` whose `IRODS_ENVIRONMENT_FILE` is set to
-`/home/irodsuser/.irods/irods_environment.json`. The entrypoint has the
-following shell environment variables available to be set with the `-e`
-option:
-
-    CLIENT_USER_ID         # defaults to 1001
-    CLIENT_USER            # defaults to irodsuser
-    CLIENT_USER_HOME       # defaults to /home/${CLIENT_USER}
-    IRODS_ENVIRONMENT_FILE # defaults to ${CLIENT_USER_HOME}/.irods/irods_environment.json
-
-The iRODS user's home directory is not created automatically, the intention
-being to allow a host volume to be mounted there.
+The Dockerfile creates a local user `appuser` with a `UID` of `1000` whose
+`IRODS_ENVIRONMENT_FILE` will be
+`/home/appuser/.irods/irods_environment.json`.
 
 ### As a replacement for native clients
 

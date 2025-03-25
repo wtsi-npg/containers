@@ -33,7 +33,7 @@ RUN python -m venv /app && \
 
 FROM $BASE_IMAGE
 
-ARG DEBIAN_FRONTEND
+ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN apt-get update && \
     apt-get upgrade -y && \
