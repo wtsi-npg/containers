@@ -59,12 +59,12 @@ of the tool set accordingly. The -h option will show online help.
 
 e.g. Show online help:
 
-    $ docker run ghcr.io/wtsi-npg/ub-18.04-irods-clients-4.2.11:latest \
+    $ singularity run docker://ghcr.io/wtsi-npg/ub-18.04-irods-clients-4.2.11:latest \
         singularity-wrapper -h
 
 e.g. List the programs provided by a container:
 
-    $ docker run ghcr.io/wtsi-npg/ub-18.04-irods-clients-4.2.11:latest \
+    $ singularity run docker://ghcr.io/wtsi-npg/ub-18.04-irods-clients-4.2.11:latest \
         singularity-wrapper list
     baton-chmod
     ...
@@ -72,8 +72,7 @@ e.g. List the programs provided by a container:
 
 e.g. Install wrappers to $PREFIX/bin:
 
-    $ docker run -v $PREFIX:/mnt/tmp \
-        ghcr.io/wtsi-npg/ub-18.04-irods-clients-4.2.11:latest \
+    $ singularity run docker://ghcr.io/wtsi-npg/ub-18.04-irods-clients-4.2.11:latest \
           singularity-wrapper -p /mnt/tmp install
 
     $ ls $PREFIX/bin
