@@ -1,28 +1,6 @@
-# Set defaults for all build stages
-
-# The latest usable version
-ARG IRODS_VERSION="4.3.1"
-# The Debian package revision number
-ARG IRODS_REVISION="0"
-
-# These defaults are the latest usable versions
-ARG BATON_VERSION="4.3.2"
-ARG HTSLIB_VERSION="1.18"
-ARG SAMTOOLS_VERSION="1.18"
-ARG BCFTOOLS_VERSION="1.18"
-ARG HTSLIB_PLUGINS_VERSION="201712"
 
 ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE AS installer
-
-# Use defaults
-ARG IRODS_VERSION
-ARG IRODS_REVISION
-ARG BATON_VERSION
-ARG HTSLIB_VERSION
-ARG SAMTOOLS_VERSION
-ARG BCFTOOLS_VERSION
-ARG HTSLIB_PLUGINS_VERSION
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -45,6 +23,11 @@ ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
     LC_ALL=en_GB.UTF-8 \
     TZ=/Etc/UTC
+
+# The latest usable version
+ARG IRODS_VERSION="4.3.1"
+# The Debian package revision number
+ARG IRODS_REVISION="0"
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
@@ -73,12 +56,16 @@ RUN apt-get update && \
 ENV CPPFLAGS="-I/usr/include/irods"
 ENV CPU_COUNT=4
 
+ARG BATON_VERSION="4.3.2"
+
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/wtsi-npg/baton/releases/download/${BATON_VERSION}/baton-${BATON_VERSION}.tar.gz" && \
     tar xfz baton-${BATON_VERSION}.tar.gz && \
     cd baton-${BATON_VERSION} && \
     ./configure && \
     make -j ${CPU_COUNT} install
+
+ARG HTSLIB_VERSION="1.18"
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2" && \
@@ -88,12 +75,16 @@ RUN cd /tmp && \
     make -j ${CPU_COUNT} install && \
     ldconfig
 
+ARG SAMTOOLS_VERSION="1.18"
+
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2" && \
     tar xfj samtools-${SAMTOOLS_VERSION}.tar.bz2 && \
     cd samtools-${SAMTOOLS_VERSION} && \
     ./configure --with-htslib=system --without-curses && \
     make -j ${CPU_COUNT} install
+
+ARG BCFTOOLS_VERSION="1.18"
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2" && \
@@ -102,17 +93,14 @@ RUN cd /tmp && \
     ./configure --with-htslib=system --without-curses && \
     make -j ${CPU_COUNT} install
 
+ARG HTSLIB_PLUGINS_VERSION="201712"
+
 RUN cd /tmp && \
     git clone --depth 1 --branch ${HTSLIB_PLUGINS_VERSION} "https://github.com/samtools/htslib-plugins.git" && \
     cd htslib-plugins && \
     make -j ${CPU_COUNT} install
 
 FROM $BASE_IMAGE 
-
-ARG DOCKER_IMAGE
-ARG DOCKER_TAG
-ARG IRODS_VERSION
-ARG IRODS_REVISION
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -132,6 +120,9 @@ RUN apt-get update && \
 ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
     LC_ALL=en_GB.UTF-8
+
+ARG IRODS_VERSION
+ARG IRODS_REVISION
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
@@ -160,6 +151,9 @@ COPY --from=installer /usr/local /usr/local
 # Copy the singularity-wrapper scripts
 COPY --from=singularity ./scripts/* /usr/local/bin/
 COPY --from=installer /opt/docker/irods_clients/manifest.txt /usr/local/irods_clients/etc/manifest.txt
+
+ARG DOCKER_IMAGE
+ARG DOCKER_TAG
 
 # Configure the singularity-wrapper script
 ENV IRODS_VERSION="$IRODS_VERSION" \

@@ -1,11 +1,6 @@
 ARG BASE_IMAGE=ubuntu:22.04
 FROM $BASE_IMAGE
 
-# The latest usable version
-ARG IRODS_VERSION="4.3.1" 
-# The Debian package revision number
-ARG IRODS_REVISION="0"
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 COPY . /opt/docker/irods_clients_dev
@@ -27,6 +22,11 @@ ENV LANG=en_GB.UTF-8 \
     LANGUAGE=en_GB \
     LC_ALL=en_GB.UTF-8 \
     TZ=/Etc/UTC
+
+# The latest usable version
+ARG IRODS_VERSION="4.3.1"
+# The Debian package revision number
+ARG IRODS_REVISION="0"
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\

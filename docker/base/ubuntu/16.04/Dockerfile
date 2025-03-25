@@ -1,7 +1,5 @@
 FROM ubuntu:16.04 as installer
 
-ENV GOSU_VERSION=1.16
-
 COPY ./scripts /opt/docker/base/scripts
 
 RUN apt-get update && \
@@ -12,6 +10,8 @@ RUN apt-get update && \
     curl \
     unattended-upgrades && \
     unattended-upgrade -d -v
+
+ENV GOSU_VERSION=1.16
 
 RUN GOSU_VERSION=$GOSU_VERSION /opt/docker/base/scripts/install_gosu.sh && \
     chmod +x /opt/docker/base/scripts/entrypoint.sh
