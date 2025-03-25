@@ -208,11 +208,11 @@ ub-22.04-irods-4.3-nightly.$(TAG): irods/ubuntu/22.04/Dockerfile.nightly ub-22.0
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
 	touch $@
 
-ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
+ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
 	--load \
 	--build-context singularity=../singularity \
-	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-16.04-base \
+	--build-arg BASE_IMAGE=ubuntu:16.04 \
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.7 \
@@ -230,11 +230,11 @@ ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile ub-16
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
-ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
+ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/18.04/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
 	--load \
 	--build-context singularity=../singularity \
-	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-18.04-base \
+	--build-arg BASE_IMAGE=ubuntu:18.04 \
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.11 \
@@ -257,7 +257,7 @@ ub-22.04-irods-clients-4.3.3.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--load \
 	--build-context singularity=../singularity \
 	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-22.04-base \
+	--build-arg BASE_IMAGE=ubuntu:22.04 \
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.3.3 \
@@ -279,7 +279,7 @@ ub-22.04-irods-clients-4.3.4.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--load \
 	--build-context singularity=../singularity \
 	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-22.04-base \
+	--build-arg BASE_IMAGE=ubuntu:22.04 \
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.3.4 \
@@ -301,7 +301,7 @@ ub-22.04-irods-clients-4.3-nightly.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--load \
 	--build-context singularity=../singularity \
 	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-22.04-base \
+	--build-arg BASE_IMAGE=ubuntu:22.04 \
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.3-nightly \

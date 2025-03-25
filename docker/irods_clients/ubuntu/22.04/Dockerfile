@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 # Set defaults for all build stages
 
 # The latest usable version
@@ -162,15 +160,22 @@ COPY --from=installer /usr/local /usr/local
 # Copy the singularity-wrapper scripts
 COPY --from=singularity ./scripts/* /usr/local/bin/
 COPY --from=installer /opt/docker/irods_clients/manifest.txt /usr/local/irods_clients/etc/manifest.txt
-COPY --from=installer /opt/docker/irods_clients/scripts/docker-entrypoint.sh /usr/local/irods_clients/bin/docker-entrypoint.sh
 
 # Configure the singularity-wrapper script
-ENV MANIFEST_PATH="/usr/local/irods_clients/etc/manifest.txt"
-ENV DOCKER_IMAGE="$DOCKER_IMAGE"
-ENV DOCKER_TAG="$DOCKER_TAG"
+ENV IRODS_VERSION="$IRODS_VERSION" \
+    MANIFEST_PATH="/usr/local/irods_clients/etc/manifest.txt" \
+    DOCKER_IMAGE="$DOCKER_IMAGE" \
+    DOCKER_TAG="$DOCKER_TAG"
 
 RUN ldconfig
 
-ENTRYPOINT ["/usr/local/irods_clients/bin/docker-entrypoint.sh"]
+ARG APP_USER=appuser
+ARG APP_UID=1000
+ARG APP_GID=$APP_UID
 
-CMD ["/bin/bash"]
+RUN groupadd --gid $APP_GID $APP_USER && \
+    useradd --uid $APP_UID --gid $APP_GID --shell /bin/bash --create-home $APP_USER
+
+USER $APP_USER
+
+CMD ["/bin/sh", "-c", "echo IRODS_VERSION=${IRODS_VERSION}"]
