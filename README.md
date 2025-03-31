@@ -1,4 +1,4 @@
-# NPG Docker images
+# NPG Docker images for development and testing
 
 ## The images ##
 
