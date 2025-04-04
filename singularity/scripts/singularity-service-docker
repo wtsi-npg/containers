@@ -44,7 +44,7 @@ flock --exclusive --timeout $LOCK_TIMEOUT $FD || {
     exit 1
 }
 
-if ! singularity instance list 2> >(logger -s -p user.err -t singularity-service-docker) |\
+if ! singularity --silent instance list 2> >(logger -s -p user.err -t singularity-service-docker) |\
         grep "$instance" 2>&1 >/dev/null
 then
     singularity --silent instance start "$DOCKER_URL" "$instance" 2> >(logger -s -p user.err -t singularity-service-docker) >/dev/null
@@ -52,4 +52,4 @@ fi
 
 clean_up
 
-singularity exec "instance://$instance" "$@"
+singularity --silent exec "instance://$instance" "$@"
