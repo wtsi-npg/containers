@@ -13,7 +13,7 @@ administration token and is configured log to STDERR and STDOUT.
 
 To run the container (with the Porch port published to the host network):
 
-`docker run -d -name porch -p 8081:8081 wsinpg/python-3.10-npg-porch-[VERSION]:latest`
+`docker run -d -name porch -p 8081:8081 wsinpg/python-[PYTHON VERSION]-npg-porch-[VERSION]:latest`
 
 where [VERSION] is the required npg_porch release e.g. 2.0.0
 
