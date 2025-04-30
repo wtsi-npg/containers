@@ -37,7 +37,7 @@ image_names += ub-22.04-irods-clients-4.3.3
 image_names += ub-22.04-irods-clients-4.3.4
 # image_names += ub-22.04-irods-clients-4.3-nightly
 
-image_names += python-3.10-npg-porch-2.0.0
+image_names += python-3.12-npg-porch-2.1.3
 
 git_url=$(shell git remote get-url origin)
 git_commit=$(shell git log --pretty=format:'%H' -n 1)
