@@ -12,6 +12,11 @@ NOW=$(shell date --utc --iso-8601=seconds)
 DOCKER_PREFIX?=$(DOCKER_REGISTRY)/$(DOCKER_USER)
 DOCKER_ARGS ?= --platform linux/amd64 --progress=plain --rm
 
+BATON_VERSION=6.0.0
+HTSLIB_VERSION=1.20
+SAMTOOLS_VERSION=1.20
+BCFTOOLS_VERSION=1.20
+
 .PHONY: clean push
 
 image_names := ub-16.04-base ub-18.04-base ub-22.04-base
@@ -37,7 +42,7 @@ image_names += ub-22.04-irods-clients-4.3.3
 image_names += ub-22.04-irods-clients-4.3.4
 # image_names += ub-22.04-irods-clients-4.3-nightly
 
-image_names += python-3.12-npg-porch-2.1.3
+image_names += python-3.12-npg-porch-2.2.0
 
 git_url=$(shell git remote get-url origin)
 git_commit=$(shell git log --pretty=format:'%H' -n 1)
@@ -176,10 +181,10 @@ ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.7 \
 	--build-arg IRODS_REVISION=1 \
-	--build-arg BATON_VERSION=5.0.2 \
-	--build-arg HTSLIB_VERSION=1.20 \
-	--build-arg SAMTOOLS_VERSION=1.20 \
-	--build-arg BCFTOOLS_VERSION=1.20 \
+	--build-arg BATON_VERSION=$(BATON_VERSION) \
+	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
+	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
+	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
 	--label org.opencontainers.image.title="iRODS 4.2.7 clients, Ubuntu 16.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -199,10 +204,10 @@ ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/18.04/Dockerfile
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.11 \
 	--build-arg IRODS_REVISION=1 \
-	--build-arg BATON_VERSION=5.0.2 \
-	--build-arg HTSLIB_VERSION=1.20 \
-	--build-arg SAMTOOLS_VERSION=1.20 \
-	--build-arg BCFTOOLS_VERSION=1.20 \
+	--build-arg BATON_VERSION=$(BATON_VERSION) \
+	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
+	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
+	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
 	--label org.opencontainers.image.title="iRODS 4.2.11 clients, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -223,10 +228,10 @@ ub-22.04-irods-clients-4.3.3.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.3.3 \
 	--build-arg IRODS_REVISION=0 \
-	--build-arg BATON_VERSION=5.0.2 \
-	--build-arg HTSLIB_VERSION=1.20 \
-	--build-arg SAMTOOLS_VERSION=1.20 \
-	--build-arg BCFTOOLS_VERSION=1.20 \
+	--build-arg BATON_VERSION=$(BATON_VERSION) \
+	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
+	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
+	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
 	--label org.opencontainers.image.title="iRODS 4.3.3 clients, Ubuntu 22.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -246,10 +251,10 @@ ub-22.04-irods-clients-4.3.4.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.3.4 \
 	--build-arg IRODS_REVISION=0 \
-	--build-arg BATON_VERSION=5.0.2 \
-	--build-arg HTSLIB_VERSION=1.20 \
-	--build-arg SAMTOOLS_VERSION=1.20 \
-	--build-arg BCFTOOLS_VERSION=1.20 \
+	--build-arg BATON_VERSION=$(BATON_VERSION) \
+	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
+	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
+	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
 	--label org.opencontainers.image.title="iRODS 4.3.4 clients, Ubuntu 22.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -268,10 +273,10 @@ ub-22.04-irods-clients-4.3-nightly.$(TAG): irods_clients/ubuntu/22.04/Dockerfile
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.3-nightly \
-	--build-arg BATON_VERSION=5.0.2 \
-	--build-arg HTSLIB_VERSION=1.20 \
-	--build-arg SAMTOOLS_VERSION=1.20 \
-	--build-arg BCFTOOLS_VERSION=1.20 \
+	--build-arg BATON_VERSION=$(BATON_VERSION) \
+	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
+	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
+	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
 	--label org.opencontainers.image.title="iRODS 4.3-nightly clients, Ubuntu 22.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
@@ -376,12 +381,12 @@ ub-22.04-irods-clients-dev-4.3-nightly.$(TAG): irods_clients_dev/ubuntu/22.04/Do
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
-python-3.12-npg-porch-2.1.3.$(TAG): porch/Dockerfile
+python-3.12-npg-porch-2.2.0.$(TAG): porch/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
 	--load \
 	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
 	--build-arg BASE_IMAGE=python:3.12-slim \
-	--build-arg PORCH_VERSION=2.1.3 \
+	--build-arg PORCH_VERSION=2.2.0 \
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
 	--label org.opencontainers.image.title="NPG Porch server, Python 3.12" \
