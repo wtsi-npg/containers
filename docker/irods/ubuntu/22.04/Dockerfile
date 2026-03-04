@@ -2,7 +2,7 @@ ARG BASE_IMAGE=ub-22.04-base
 FROM $BASE_IMAGE
 
 # The default is the latest usable version
-ARG IRODS_VERSION="4.3.1"
+ARG IRODS_VERSION="4.3.5"
 # This is the Debian package revision number
 ARG IRODS_REVISION="0"
 
@@ -59,6 +59,8 @@ RUN /opt/docker/irods/scripts/create_database.sh && \
 EXPOSE 1247
 
 HEALTHCHECK --interval=10s --timeout=30s --start-period=5s --retries=3 CMD [ "nc", "-v", "-z", "localhost", "1247" ]
+
+ENV IRODS_VERSION=$IRODS_VERSION
 
 ENTRYPOINT []
 CMD ["/opt/docker/irods/scripts/start_irods.sh"]

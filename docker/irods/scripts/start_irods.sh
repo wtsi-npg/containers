@@ -22,26 +22,23 @@ done
 
 echo "PostgreSQL is ready"
 
-# iRODS 4.1.12 startup usually fails here, even after PostgreSQL is
-# accepting connections. The service script gives the error:
-#
-# RuntimeError: get_current_schema_version: failed to find result line
-# for schema_version
-#
-# The lack of resilience means that we have to fall back on a sleep.
-echo "Starting iRODS ..."
-while true
-do
-    service irods start >/dev/null && break
-    sleep 5
-done
+case "$IRODS_VERSION" in
+    4.3.4|4.3.5)
+        echo "Starting iRODS in test mode ..."
+        export IRODS_ENABLE_TEST_MODE=1
+        gosu irods /var/lib/irods/irodsctl start --test
+        exec tail -n +1 -F /var/lib/irods/log/test_mode_output.log
+        ;;
+    *)
+        echo "Starting iRODS ..."
+        gosu irods /var/lib/irods/irodsctl start
+        while true; do
+            shopt -s nullglob
+            logs=(/var/lib/irods/log/rodsLog*)
+            shopt -u nullglob
 
-echo "Waiting for iRODS to become ready ..."
-while true
-do
-    service irods status | grep "\bProcess" >/dev/null && break
-    sleep 1
-done
-echo "iRODS is ready"
-
-exec gosu irods /bin/bash -c "sleep infinity"
+            [ "${#logs[@]}" -gt 0 ] && exec tail -n +1 -F "${logs[@]}"
+            sleep 1
+        done
+        ;;
+esac
