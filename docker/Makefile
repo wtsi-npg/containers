@@ -19,23 +19,17 @@ BCFTOOLS_VERSION=1.23
 
 .PHONY: clean push
 
-image_names := ub-16.04-base ub-18.04-base ub-22.04-base
+image_names := ub-16.04-base ub-22.04-base
 
 image_names += ub-16.04-irods-4.2.7
-image_names += ub-18.04-irods-4.2.11
-
 image_names += ub-22.04-irods-4.3.4
 image_names += ub-22.04-irods-4.3.5
 
 image_names += ub-16.04-irods-clients-dev-4.2.7
-image_names += ub-18.04-irods-clients-dev-4.2.11
-
 image_names += ub-22.04-irods-clients-dev-4.3.4
 image_names += ub-22.04-irods-clients-dev-4.3.5
 
 image_names += ub-16.04-irods-clients-4.2.7
-image_names += ub-18.04-irods-clients-4.2.11
-
 image_names += ub-22.04-irods-clients-4.3.4
 image_names += ub-22.04-irods-clients-4.3.5
 
@@ -65,20 +59,6 @@ ub-16.04-base.$(TAG): base/ubuntu/16.04/Dockerfile
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./base
 	touch $@
 
-ub-18.04-base.$(TAG): base/ubuntu/18.04/Dockerfile
-	docker buildx build $(DOCKER_ARGS) \
-	--pull \
-	--load \
-	--label org.opencontainers.image.title="Base image, Ubuntu 18.04" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./base
-	touch $@
-
 ub-22.04-base.$(TAG): base/ubuntu/22.04/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
 	--pull \
@@ -99,22 +79,6 @@ ub-16.04-irods-4.2.7.$(TAG): irods/ubuntu/16.04/Dockerfile ub-16.04-base.$(TAG)
 	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-16.04-base \
 	--build-arg IRODS_VERSION=4.2.7 \
 	--label org.opencontainers.image.title="iRODS 4.2.7 server, Ubuntu 16.04" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods
-	touch $@
-
-ub-18.04-irods-4.2.11.$(TAG): irods/ubuntu/18.04/Dockerfile ub-18.04-base.$(TAG)
-	docker buildx build $(DOCKER_ARGS) \
-	--load \
-	--build-arg BASE_IMAGE=$(DOCKER_PREFIX)/ub-18.04-base \
-	--build-arg IRODS_VERSION=4.2.11 \
-	--build-arg IRODS_REVISION=1 \
-	--label org.opencontainers.image.title="iRODS 4.2.11 server, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
 	--label org.opencontainers.image.version=$(TAG) \
@@ -168,29 +132,6 @@ ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile
 	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
 	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
 	--label org.opencontainers.image.title="iRODS 4.2.7 clients, Ubuntu 16.04" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
-	touch $@
-
-ub-18.04-irods-clients-4.2.11.$(TAG): irods_clients/ubuntu/18.04/Dockerfile
-	docker buildx build $(DOCKER_ARGS) \
-	--load \
-	--build-context singularity=../singularity \
-	--build-arg BASE_IMAGE=ubuntu:18.04 \
-	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
-	--build-arg DOCKER_TAG=$(TAG) \
-	--build-arg IRODS_VERSION=4.2.11 \
-	--build-arg IRODS_REVISION=1 \
-	--build-arg BATON_VERSION=$(BATON_VERSION) \
-	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
-	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
-	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
-	--label org.opencontainers.image.title="iRODS 4.2.11 clients, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
 	--label org.opencontainers.image.version=$(TAG) \
@@ -255,25 +196,6 @@ ub-16.04-irods-clients-dev-4.2.7.$(TAG): irods_clients_dev/ubuntu/16.04/Dockerfi
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.7 \
 	--label org.opencontainers.image.title="iRODS 4.2.7 client development, Ubuntu 16.04" \
-	--label org.opencontainers.image.source=$(git_url) \
-	--label org.opencontainers.image.revision=$(git_commit) \
-	--label org.opencontainers.image.version=$(TAG) \
-	--label org.opencontainers.image.created=$(NOW) \
-	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
-	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
-	touch $@
-
-ub-18.04-irods-clients-dev-4.2.11.$(TAG): irods_clients_dev/ubuntu/18.04/Dockerfile
-	docker buildx build $(DOCKER_ARGS) \
-	--load \
-	--build-context singularity=../singularity \
-	--build-arg BASE_IMAGE=ubuntu:18.04 \
-	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
-	--build-arg DOCKER_TAG=$(TAG) \
-	--build-arg IRODS_VERSION=4.2.11 \
-	--build-arg IRODS_REVISION=1 \
-	--label org.opencontainers.image.title="iRODS 4.2.11 client development, Ubuntu 18.04" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
 	--label org.opencontainers.image.version=$(TAG) \
