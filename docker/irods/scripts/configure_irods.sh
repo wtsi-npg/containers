@@ -9,35 +9,11 @@ service postgresql start
 # Run the iRODS setup script which configures the new server.
 
 case "$IRODS_VERSION" in
-   4.3-nightly)
-        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
-        ;;
-    4.1.*)
-        /var/lib/irods/packaging/setup_irods.sh < /opt/docker/irods/config/setup_irods.sh.in
-        ;;
     4.2.*)
         patch /var/lib/irods/scripts/irods/lib.py /opt/docker/irods/patches/patch_lib.diff
         python /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/setup_irods.py.in
         ;;
-    4.3.0)
-        patch /var/lib/irods/scripts/irods/controller.py /opt/docker/irods/patches/patch_controller.diff
-        sudo python3 /var/lib/irods/scripts/setup_rsyslog_and_logrotate.py # Automatic setup for these has been removed.
-        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
-        ;;
-    4.3.1)
-        patch /var/lib/irods/scripts/irods/controller.py /opt/docker/irods/patches/patch_controller.diff
-        # Logging has been changed to use rsyslog. A potential enhancement is to configure that here.
-        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
-        ;;
-    4.3.2)
-        # Logging has been changed to use rsyslog. A potential enhancement is to configure that here.
-        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
-        ;;
-    4.3.3)
-        # Logging has been changed to use rsyslog. A potential enhancement is to configure that here.
-        python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
-        ;;
-    4.3.4)
+    4.3.4|4.3.5)
         # Logging has been changed to use rsyslog. A potential enhancement is to configure that here.
         python3 /var/lib/irods/scripts/setup_irods.py < /opt/docker/irods/config/4.3.x.setup_irods.py.in
         ;;
@@ -50,7 +26,10 @@ esac
 # build container and set the server checksum to MD5.
 cd /etc/irods/
 echo $(jq -f /opt/docker/irods/config/server_config.delta \
-          ./server_config.json) > ./server_config.json
+         ./server_config.json) > ./server_config.json
+# Set debug level logging
+echo $(jq -f /opt/docker/irods/config/server_config_logging.delta \
+         ./server_config.json) > ./server_config.json
 
 # Patch core.re to set the default resource because sometimes iRODS
 # ignores the default resource set in either client or server config.
@@ -71,7 +50,7 @@ sed -i 's/acSetRescSchemeForRepl\(.*\)demoResc/acSetRescSchemeForRepl\1testResc/
 # the build container
 cd /var/lib/irods/.irods/
 echo $(jq -f /opt/docker/irods/config/irods_environment.delta \
-          ./irods_environment.json) > ./irods_environment.json
+         ./irods_environment.json) > ./irods_environment.json
 
 # iRODS 4.2.9 needs to started here. It's not required for 4.2.7 and
 # 4.2.8, which appear to be started during setup. We call restart

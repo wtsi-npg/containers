@@ -20,4 +20,4 @@ This image will create a development container suitable for
 The Dockerfile supports two build arguments:
 
 - BASE_IMAGE (defaults "ubuntu:22.04")
-- IRODS_VERSION (defaults to the latest usable iRODS version, currently "4.3.1")
+- IRODS_VERSION (defaults to the latest usable iRODS version, currently "4.3.5")

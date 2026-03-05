@@ -19,11 +19,11 @@ The Dockerfile supports these build arguments:
 - BASE_IMAGE (defaults to "ubuntu:22.04")
 - DOCKER_IMAGE (no default, must be supplied)
 - DOCKER_TAG (no default, must be supplied)
-- IRODS_VERSION (defaults to the latest usable iRODS version, currently "4.3.1")
+- IRODS_VERSION (defaults to the latest usable iRODS version, currently "4.3.5")
 - BATON_VERSION (defaults to "6.00")
-- HTSLIB_VERSION (defaults to "1.22.1")
-- SAMTOOLS_VERSION (defaults to "1.22.1")
-- BCFTOOLS_VERSION (defaults to "1.22")
+- HTSLIB_VERSION (defaults to "1.23")
+- SAMTOOLS_VERSION (defaults to "1.23")
+- BCFTOOLS_VERSION (defaults to "1.23")
 - HTSLIB_PLUGINS_VERSION (defaults to "201712")
 
 The Dockerfile creates a local user `appuser` with a `UID` of `1000` whose

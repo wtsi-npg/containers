@@ -1,0 +1,2 @@
+.log_level.agent="info" | .log_level.api="info" | .log_level.authentication="info" | .log_level
+.network="info" | .log_level.resource="info" | .log_level.server="info"

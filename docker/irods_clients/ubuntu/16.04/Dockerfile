@@ -70,7 +70,7 @@ RUN cd /tmp && \
     ./configure && \
     make -j ${CPU_COUNT} install
 
-ARG HTSLIB_VERSION="1.22.1"
+ARG HTSLIB_VERSION="1.23"
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/htslib/releases/download/${HTSLIB_VERSION}/htslib-${HTSLIB_VERSION}.tar.bz2" && \
@@ -80,7 +80,7 @@ RUN cd /tmp && \
     make -j ${CPU_COUNT} install && \
     ldconfig
 
-ARG SAMTOOLS_VERSION="1.22.1"
+ARG SAMTOOLS_VERSION="1.23"
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/samtools/releases/download/${SAMTOOLS_VERSION}/samtools-${SAMTOOLS_VERSION}.tar.bz2" && \
@@ -89,7 +89,7 @@ RUN cd /tmp && \
     ./configure --with-htslib=system --without-curses && \
     make -j ${CPU_COUNT} install
 
-ARG BCFTOOLS_VERSION="1.22"
+ARG BCFTOOLS_VERSION="1.23"
 
 RUN cd /tmp && \
     curl -sSL -O "https://github.com/samtools/bcftools/releases/download/${BCFTOOLS_VERSION}/bcftools-${BCFTOOLS_VERSION}.tar.bz2" && \
