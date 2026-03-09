@@ -77,7 +77,7 @@ jobs:
           git fetch --tags --force
 
       - name: "Set up Docker Buildx"
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
         with:
           buildkitd-flags: --debug
 
