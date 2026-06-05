@@ -33,7 +33,7 @@ image_names += ub-16.04-irods-clients-4.2.7
 image_names += ub-22.04-irods-clients-4.3.4
 image_names += ub-22.04-irods-clients-4.3.5
 
-image_names += python-3.12-npg-porch-2.2.0
+image_names += python-3.14-npg-porch-3.0
 
 git_url=$(shell git remote get-url origin)
 git_commit=$(shell git log --pretty=format:'%H' -n 1)
@@ -243,15 +243,15 @@ ub-22.04-irods-clients-dev-4.3.5.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfi
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
 
-python-3.12-npg-porch-2.2.0.$(TAG): porch/Dockerfile
+python-3.14-npg-porch-3.0.$(TAG): porch/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
 	--load \
 	--build-arg DOCKER_PREFIX=$(DOCKER_PREFIX) \
-	--build-arg BASE_IMAGE=python:3.12-slim \
-	--build-arg PORCH_VERSION=2.2.0 \
+	--build-arg BASE_IMAGE=python:3.14-slim \
+	--build-arg PORCH_VERSION=3.0 \
 	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
 	--build-arg DOCKER_TAG=$(TAG) \
-	--label org.opencontainers.image.title="NPG Porch server, Python 3.12" \
+	--label org.opencontainers.image.title="NPG Porch server, Python 3.14" \
 	--label org.opencontainers.image.source=$(git_url) \
 	--label org.opencontainers.image.revision=$(git_commit) \
 	--label org.opencontainers.image.version=$(TAG) \

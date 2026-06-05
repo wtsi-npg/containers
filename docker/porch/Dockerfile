@@ -1,5 +1,5 @@
 
-ARG BASE_IMAGE=python:3.10-slim
+ARG BASE_IMAGE=python:3.14-slim
 FROM $BASE_IMAGE AS builder
 
 ENV DEBIAN_FRONTEND="noninteractive"
@@ -19,7 +19,7 @@ COPY ./scripts/*.sh /app/docker/scripts/
 
 COPY ./logging.json /app/docker/logging.json
 
-ARG PORCH_VERSION=2.0.0
+ARG PORCH_VERSION=3.0
 
 # The last 2 lines are a workaround for porch's pip install not copying the scripts
 RUN python -m venv /app && \
