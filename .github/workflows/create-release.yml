@@ -89,6 +89,9 @@ jobs:
             password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Build and push Docker images"
+        env:
+            ENG_BUILD_URL: ${{ vars.ENG_BUILD_URL }}
+
         run: |
             cd docker
 
