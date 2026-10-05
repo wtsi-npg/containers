@@ -22,16 +22,16 @@ BCFTOOLS_VERSION=1.24
 image_names := ub-16.04-base ub-22.04-base
 
 image_names += ub-16.04-irods-4.2.7
+image_names += ub-16.04-irods-4.2.7-engineering
 image_names += ub-22.04-irods-4.3.4
 image_names += ub-22.04-irods-4.3.5
-
-image_names += ub-16.04-irods-4.2.7-engineering
 
 image_names += ub-16.04-irods-clients-dev-4.2.7
 image_names += ub-22.04-irods-clients-dev-4.3.4
 image_names += ub-22.04-irods-clients-dev-4.3.5
 
 image_names += ub-16.04-irods-clients-4.2.7
+image_names += ub-16.04-irods-clients-4.2.7-engineering
 image_names += ub-22.04-irods-clients-4.3.4
 image_names += ub-22.04-irods-clients-4.3.5
 
@@ -146,6 +146,30 @@ ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile
 	--build-arg DOCKER_TAG=$(TAG) \
 	--build-arg IRODS_VERSION=4.2.7 \
 	--build-arg IRODS_REVISION=1 \
+	--build-arg BATON_VERSION=$(BATON_VERSION) \
+	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
+	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
+	--build-arg BCFTOOLS_VERSION=$(BCFTOOLS_VERSION) \
+	--label org.opencontainers.image.title="iRODS 4.2.7 clients, Ubuntu 16.04" \
+	--label org.opencontainers.image.source=$(git_url) \
+	--label org.opencontainers.image.revision=$(git_commit) \
+	--label org.opencontainers.image.version=$(TAG) \
+	--label org.opencontainers.image.created=$(NOW) \
+	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
+	touch $@
+
+
+ub-16.04-irods-clients-4.2.7-engineering.$(TAG): irods_clients/ubuntu/16.04/Dockerfile.engineering
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
+	--build-context singularity=../singularity \
+	--build-arg BASE_IMAGE=ubuntu:16.04 \
+	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
+	--build-arg DOCKER_TAG=$(TAG) \
+	--build-arg IRODS_VERSION=4.2.7 \
+	--build-arg ENG_BUILD_URL="$(ENG_BUILD_URL)" \
 	--build-arg BATON_VERSION=$(BATON_VERSION) \
 	--build-arg HTSLIB_VERSION=$(HTSLIB_VERSION) \
 	--build-arg SAMTOOLS_VERSION=$(SAMTOOLS_VERSION) \
