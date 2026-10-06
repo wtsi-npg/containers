@@ -27,6 +27,7 @@ image_names += ub-22.04-irods-4.3.4
 image_names += ub-22.04-irods-4.3.5
 
 image_names += ub-16.04-irods-clients-dev-4.2.7
+image_names += ub-16.04-irods-clients-dev-4.2.7-engineering
 image_names += ub-22.04-irods-clients-dev-4.3.4
 image_names += ub-22.04-irods-clients-dev-4.3.5
 
@@ -160,7 +161,6 @@ ub-16.04-irods-clients-4.2.7.$(TAG): irods_clients/ubuntu/16.04/Dockerfile
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients
 	touch $@
 
-
 ub-16.04-irods-clients-4.2.7-engineering.$(TAG): irods_clients/ubuntu/16.04/Dockerfile.engineering
 	docker buildx build $(DOCKER_ARGS) \
 	--load \
@@ -247,6 +247,26 @@ ub-16.04-irods-clients-dev-4.2.7.$(TAG): irods_clients_dev/ubuntu/16.04/Dockerfi
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
 	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
 	touch $@
+
+ub-16.04-irods-clients-dev-4.2.7-engineering.$(TAG): irods_clients_dev/ubuntu/16.04/Dockerfile.engineering
+	docker buildx build $(DOCKER_ARGS) \
+	--load \
+	--build-context singularity=../singularity \
+	--build-arg BASE_IMAGE=ubuntu:16.04 \
+	--build-arg DOCKER_IMAGE=$(subst .$(TAG),,$@) \
+	--build-arg DOCKER_TAG=$(TAG) \
+	--build-arg IRODS_VERSION=4.2.7 \
+	--build-arg ENG_BUILD_URL="$(ENG_BUILD_URL)" \
+	--label org.opencontainers.image.title="iRODS 4.2.7 client development, Ubuntu 16.04" \
+	--label org.opencontainers.image.source=$(git_url) \
+	--label org.opencontainers.image.revision=$(git_commit) \
+	--label org.opencontainers.image.version=$(TAG) \
+	--label org.opencontainers.image.created=$(NOW) \
+	--label org.opencontainers.image.vendor=npg.sanger.ac.uk \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):latest \
+	--tag $(DOCKER_PREFIX)/$(subst .$(TAG),,$@):$(TAG) --file $< ./irods_clients_dev
+	touch $@
+
 
 ub-22.04-irods-clients-dev-4.3.4.$(TAG): irods_clients_dev/ubuntu/22.04/Dockerfile
 	docker buildx build $(DOCKER_ARGS) \
