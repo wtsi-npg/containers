@@ -1,0 +1,79 @@
+ARG BASE_IMAGE=ubuntu:16.04
+FROM $BASE_IMAGE
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY . /opt/docker/irods_clients_dev
+
+RUN apt-get update && \
+    apt-get install -q -y --no-install-recommends \
+    apt-transport-https \
+    apt-utils \
+    ca-certificates \
+    curl \
+    dirmngr \
+    gnupg \
+    gnupg-agent \
+    lsb-release \
+    locales && \
+    locale-gen en_GB en_GB.UTF-8 && \
+    localedef -i en_GB -c -f UTF-8 -A /usr/share/locale/locale.alias en_GB.UTF-8
+
+ENV LANG=en_GB.UTF-8 \
+    LANGUAGE=en_GB \
+    LC_ALL=en_GB.UTF-8 \
+    TZ=/Etc/UTC
+
+# The latest usable version
+ARG IRODS_VERSION="4.2.7"
+
+ARG ENG_BUILD_URL
+
+RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
+    echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
+    tee /etc/apt/sources.list.d/renci-irods.list && \
+    apt-get update
+
+RUN test -n "$ENG_BUILD_URL" || \
+    { echo "ENG_BUILD_URL build argument is required" >&2; exit 1; }
+
+RUN curl -fsSL -o sanger_engineering_build-irods_4.2.7.tar.gz "$ENG_BUILD_URL" && \
+    tar xvf sanger_engineering_build-irods_4.2.7.tar.gz && \
+    md5sum sanger_engineering_build_4.2.7/*.deb
+
+RUN apt-get update && apt-get install -y \
+    ./sanger_engineering_build_4.2.7/irods-dev*.deb \
+    ./sanger_engineering_build_4.2.7/irods-runtime*.deb \
+    ./sanger_engineering_build_4.2.7/irods-icommands*.deb
+
+
+RUN apt-key add - < /opt/docker/irods_clients_dev/keys/git-core-ppa.asc && \
+    echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -sc) main" |\
+    tee /etc/apt/sources.list.d/git-core.list
+
+RUN apt-get update && \
+    apt-get install -q -y --no-install-recommends \
+    autoconf \
+    automake \
+    build-essential \
+    check \
+    cmake \
+    gdb \
+    git \
+    jq \
+    lcov \
+    less \
+    libjansson-dev \
+    libtool \
+    netcat \
+    pkg-config \
+    python3-sphinx \
+    ssh \
+    valgrind \
+    unattended-upgrades && \
+    unattended-upgrade -v
+
+ENV CPPFLAGS="-I/usr/include/irods" \
+    CK_DEFAULT_TIMEOUT=20
+
+CMD ["/bin/bash"]
