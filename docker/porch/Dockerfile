@@ -22,11 +22,15 @@ COPY ./logging.json /app/docker/logging.json
 ARG PORCH_VERSION=3.0
 
 # The last 2 lines are a workaround for porch's pip install not copying the scripts
+#
+# sqlalchemy[asyncio] is not declared by porch 3.0 as a dependency, but is needed to ensure
+# complete SQLAlchemy asyncio support (a change in sqlalchemy 2.1).
 RUN python -m venv /app && \
     . /app/bin/activate && \
     pip install --no-cache-dir --upgrade pip && \
     git clone --branch "v${PORCH_VERSION}" --single-branch https://github.com/wtsi-npg/npg_porch.git /tmp/npg_porch && \
     cd /tmp/npg_porch && \
+    pip install sqlalchemy[asyncio] && \
     pip install --no-cache-dir . && \
     mkdir /app/scripts && \
     cp ./scripts/*.py /app/scripts/ 
