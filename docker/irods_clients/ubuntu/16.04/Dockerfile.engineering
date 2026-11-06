@@ -38,13 +38,12 @@ RUN test -n "$ENG_BUILD_URL" || \
     { echo "ENG_BUILD_URL build argument is required" >&2; exit 1; }
 
 RUN curl -fsSL -o sanger_engineering_build-irods_4.2.7.tar.gz "$ENG_BUILD_URL" && \
-    tar xvf sanger_engineering_build-irods_4.2.7.tar.gz && \
-    md5sum sanger_engineering_build_4.2.7/*.deb
+    tar xvf sanger_engineering_build-irods_4.2.7.tar.gz
 
 RUN apt-get update && apt-get install -y \
-    ./sanger_engineering_build_4.2.7/irods-dev*.deb \
-    ./sanger_engineering_build_4.2.7/irods-runtime*.deb \
-    ./sanger_engineering_build_4.2.7/irods-icommands*.deb
+    ./irods-4.2.7.sanger1/irods-dev*.deb \
+    ./irods-4.2.7.sanger1/irods-runtime*.deb \
+    ./irods-4.2.7.sanger1/irods-icommands*.deb
 
 RUN apt-key add - < /opt/docker/irods_clients/keys/git-core-ppa.asc && \
     echo "deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu $(lsb_release -sc) main" |\
@@ -150,12 +149,12 @@ RUN test -n "$ENG_BUILD_URL" || \
     { echo "ENG_BUILD_URL build argument is required" >&2; exit 1; }
 
 RUN curl -fsSL -o sanger_engineering_build-irods_4.2.7.tar.gz "$ENG_BUILD_URL" && \
-    tar xvf sanger_engineering_build-irods_4.2.7.tar.gz && \
-    md5sum sanger_engineering_build_4.2.7/*.deb
+    tar xvf sanger_engineering_build-irods_4.2.7.tar.gz
+
 
 RUN apt-get update && apt-get install -y \
-    ./sanger_engineering_build_4.2.7/irods-runtime*.deb \
-    ./sanger_engineering_build_4.2.7/irods-icommands*.deb
+    ./irods-4.2.7.sanger1/irods-runtime*.deb \
+    ./irods-4.2.7.sanger1/irods-icommands*.deb
 
 RUN apt-get install -q -y --no-install-recommends \
     jq \

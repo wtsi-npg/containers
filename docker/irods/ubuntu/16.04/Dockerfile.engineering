@@ -45,10 +45,13 @@ RUN test -n "$ENG_BUILD_URL" || \
     { echo "ENG_BUILD_URL build argument is required" >&2; exit 1; }
 
 RUN curl -fsSL -o sanger_engineering_build-irods_4.2.7.tar.gz "$ENG_BUILD_URL" && \
-    tar xvf sanger_engineering_build-irods_4.2.7.tar.gz && \
-    md5sum sanger_engineering_build_4.2.7/*.deb
+    tar xvf sanger_engineering_build-irods_4.2.7.tar.gz
 
-RUN apt-get update && apt-get install -y ./sanger_engineering_build_4.2.7/*.deb
+RUN apt-get update && apt-get install -y \
+    ./irods-4.2.7.sanger1/irods-server*.deb \
+    ./irods-4.2.7.sanger1/irods-runtime*.deb \
+    ./irods-4.2.7.sanger1/irods-database-plugin*.deb \
+    ./irods-4.2.7.sanger1/irods-icommands*.deb
 
 RUN /opt/docker/irods/scripts/create_database.sh && \
     /opt/docker/irods/scripts/configure_irods.sh && \
