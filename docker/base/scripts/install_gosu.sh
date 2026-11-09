@@ -9,7 +9,7 @@ PREFIX=${PREFIX:-/usr/local}
 # gpg --keyserver hkp://keyserver.ubuntu.com:80 \
 #     --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
 
-# Key retrieval would sometimes fail during the build, to I
+# Key retrieval would sometimes fail during the build, so I
 # have embedded tianon's public key in the script.
 
 cat << 'PUBKEY' > /tmp/pubkey.asc

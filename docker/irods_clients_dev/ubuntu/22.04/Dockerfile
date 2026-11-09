@@ -5,10 +5,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY . /opt/docker/irods_clients_dev
 
+RUN /opt/docker/irods_clients_dev/scripts/manage_ca_certs.sh
+
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-utils \
-    ca-certificates \
     curl \
     dirmngr \
     gpg \

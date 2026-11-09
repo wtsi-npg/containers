@@ -6,6 +6,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY . /opt/docker/irods_clients
 
+RUN /opt/docker/irods_clients/scripts/manage_ca_certs.sh
+
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-utils \
@@ -103,6 +105,10 @@ RUN cd /tmp && \
 FROM $BASE_IMAGE 
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+COPY ./scripts/manage_ca_certs.sh /opt/docker/irods_clients/scripts/manage_ca_certs.sh
+
+RUN /opt/docker/irods_clients/scripts/manage_ca_certs.sh
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \

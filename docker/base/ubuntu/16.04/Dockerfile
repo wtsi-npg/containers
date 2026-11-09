@@ -1,12 +1,14 @@
-FROM ubuntu:16.04 as installer
+FROM ubuntu:16.04 AS installer
 
 COPY ./scripts /opt/docker/base/scripts
 
+RUN /opt/docker/base/scripts/manage_ca_certs.sh
+
 RUN apt-get update && \
     apt-get install -q -y \
+    apt-transport-https \
     apt-utils \
     bzip2 \
-    ca-certificates \
     curl \
     unattended-upgrades && \
     unattended-upgrade -d -v
@@ -18,9 +20,15 @@ RUN GOSU_VERSION=$GOSU_VERSION /opt/docker/base/scripts/install_gosu.sh && \
 
 FROM ubuntu:16.04
 
+COPY ./scripts/manage_ca_certs.sh /opt/docker/base/scripts/manage_ca_certs.sh
+
+RUN /opt/docker/base/scripts/manage_ca_certs.sh
+
 RUN apt-get update && \
     apt-get install -q -y \
+    apt-transport-https \
     apt-utils \
+    lsb-release \
     unattended-upgrades && \
     unattended-upgrade -d -v && \
     apt-get remove -q -y unattended-upgrades && \
