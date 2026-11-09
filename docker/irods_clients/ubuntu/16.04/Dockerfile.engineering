@@ -6,11 +6,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY . /opt/docker/irods_clients
 
+RUN /opt/docker/irods_clients/scripts/manage_ca_certs.sh
+
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-transport-https \
     apt-utils \
-    ca-certificates \
     curl \
     dirmngr \
     gnupg \
@@ -28,6 +29,7 @@ ENV LANG=en_GB.UTF-8 \
 ARG IRODS_VERSION="4.2.7"
 
 ARG ENG_BUILD_URL
+
 
 RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - && \
     echo "deb [arch=amd64] https://packages.irods.org/apt/ $(lsb_release -sc) main" |\
@@ -118,11 +120,14 @@ FROM $BASE_IMAGE
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+COPY ./scripts/manage_ca_certs.sh /opt/docker/irods_clients/scripts/manage_ca_certs.sh
+
+RUN /opt/docker/irods_clients/scripts/manage_ca_certs.sh
+
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     apt-transport-https \
     apt-utils \
-    ca-certificates \
     curl \
     dirmngr \
     gnupg \

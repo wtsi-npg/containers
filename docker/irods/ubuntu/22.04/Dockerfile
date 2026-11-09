@@ -16,12 +16,9 @@ COPY ./patches/* ./patches/
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
-    apt-utils \
-    ca-certificates \
     curl \
     gpg \
     gpg-agent \
-    lsb-release \
     jq \
     netcat \
     patch \
@@ -54,7 +51,8 @@ RUN curl -sSL https://packages.irods.org/irods-signing-key.asc | apt-key add - &
     rm -rf /var/lib/apt/lists/*
 
 RUN /opt/docker/irods/scripts/create_database.sh && \
-    /opt/docker/irods/scripts/configure_irods.sh
+    /opt/docker/irods/scripts/configure_irods.sh && \
+    /opt/docker/irods/scripts/advance_r_object_id.sh
 
 EXPOSE 1247
 

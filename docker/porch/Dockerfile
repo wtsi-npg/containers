@@ -4,6 +4,12 @@ FROM $BASE_IMAGE AS builder
 
 ENV DEBIAN_FRONTEND="noninteractive"
 
+COPY ./scripts/*.sh /app/docker/scripts/
+
+COPY ./logging.json /app/docker/logging.json
+
+RUN /app/docker/scripts/manage_ca_certs.sh
+
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
     build-essential \
@@ -14,10 +20,6 @@ RUN apt-get update && \
     unattended-upgrade -v
 
 WORKDIR /app
-
-COPY ./scripts/*.sh /app/docker/scripts/
-
-COPY ./logging.json /app/docker/logging.json
 
 ARG PORCH_VERSION=3.0
 
@@ -38,6 +40,12 @@ RUN python -m venv /app && \
 FROM $BASE_IMAGE
 
 ENV DEBIAN_FRONTEND="noninteractive"
+
+COPY ./scripts/*.sh /app/docker/scripts/
+
+COPY ./logging.json /app/docker/logging.json
+
+RUN /app/docker/scripts/manage_ca_certs.sh
 
 RUN apt-get update && \
     apt-get upgrade -y && \

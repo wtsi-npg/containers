@@ -14,10 +14,7 @@ COPY ./patches/* ./patches/
 
 RUN apt-get update && \
     apt-get install -q -y --no-install-recommends \
-    apt-transport-https \
-    ca-certificates \
     curl \
-    lsb-release \
     jq \
     netcat \
     patch \
